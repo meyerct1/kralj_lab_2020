@@ -13,15 +13,15 @@ import numpy
 import matplotlib.pyplot as plt
 
 ##########################
-## File Import (todo)
-train_dir =
-val_dir =
+## File Import
+train_dir = "/Library/ML Data/Antibiotic videos/Train"
+val_dir = "/Library/ML Data/Antibiotic videos/Test"
 
-train_treated_dir =
-train_untreated_dir =
+train_treated_dir = "/Library/ML Data/Antibiotic videos/Train/Treated Diff train"
+train_untreated_dir = "/Library/ML Data/Antibiotic videos/Train/Untreated Diff train"
 
-val_treated_dir =
-val_untreated_dir =
+val_treated_dir = "/Library/ML Data/Antibiotic videos/Test/Treated Diff val"
+val_untreated_dir = "/Library/ML Data/Antibiotic videos/Test/Untreated Diff val"
 
 num_treated_tr = len(os.listdir(train_treated_dir))
 num_untreated_tr = len(os.listdir(train_untreated_dir))
@@ -54,7 +54,7 @@ train_data_gen = image_gen_train.flow_from_directory(batch_size=batch_size,
                                                      class_mode='binary')
 
 val_data_gen = validation_image_generator.flow_from_directory(batch_size=batch_size,
-                                                              directory=validation_dir,
+                                                              directory=val_dir,
                                                               target_size=(IMG_HEIGHT, IMG_WIDTH),
                                                               class_mode='binary')
 
