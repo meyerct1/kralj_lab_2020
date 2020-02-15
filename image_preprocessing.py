@@ -14,7 +14,7 @@ import shutil
 print(cv2.__version__)
 
 #todo
-# make sure everything runs smoothly, do a full run through test
+## make sure everything runs smoothly, do a full run through test (done)
 ## generalize functions one read and one save directory frame_extraction and test_train_split (done)
 
 
