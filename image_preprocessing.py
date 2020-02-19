@@ -108,7 +108,6 @@ def diff_imager(read_dir, save_dir, first_frame, last_frame):
 # origin_dir.
 def test_train_split(origin_dir, train_dir, val_dir):
 
-    # code for untreated directory
     directory = origin_dir.split("/")
     extname = directory[-1]
 
@@ -168,18 +167,33 @@ def cleaner_upper(dir, ext):
         for f in filelist:
             os.remove(f)
 
+# Finds specific images ina folder (used for looking up specific frames)
+def image_finder(origin_dir, dest_dir, frame_number):
+    for subdir, subdirList, fileList in os.walk(origin_dir):
+        print(subdir)  # for every subdirectory in the origin_dir
+        if subdir.endswith(".avi"):  # if the folder ends with .avi, means it was created by frame_extraction
+            dirname = os.fsdecode(subdir)
+            img = cv2.imread(subdir + '/frame%d.jpg' % frame_number)
+            names = dirname.split("/")
+            savename = names[-1]
+            img.save("%s %s frame%d).png" % ((dest_dir + "/"), savename, frame_number))
+        else:
+            continue
+
+
+
 ########################################################
 
 # Main:
 
-frame_extraction(treated_video_dir, treated_save_dir)
-frame_extraction(untreated_video_dir, untreated_save_dir)
+#frame_extraction(treated_video_dir, treated_save_dir)
+#frame_extraction(untreated_video_dir, untreated_save_dir)
 
-diff_imager(treated_save_dir, treated_saved_dir, 15, 60)
-diff_imager(untreated_save_dir, untreated_saved_dir, 15, 60)
+#diff_imager(treated_save_dir, treated_saved_dir, 15, 120)
+#diff_imager(untreated_save_dir, untreated_saved_dir, 15, 120)
 
-test_train_split(treated_saved_dir, train_data, test_data)
-test_train_split(untreated_saved_dir, train_data, test_data)
+#test_train_split(treated_saved_dir, train_data, test_data)
+#test_train_split(untreated_saved_dir, train_data, test_data)
 
 
 
