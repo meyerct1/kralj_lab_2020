@@ -35,7 +35,7 @@ total_val = num_treated_vl + num_untreated_vl
 
 # Variables
 
-batch_size = 5
+batch_size = 10
 epochs = 15 #50?
 IMG_HEIGHT = 150
 IMG_WIDTH = 150
@@ -43,7 +43,14 @@ IMG_WIDTH = 150
 ##########################
 
 #Data preparation (used to generate usable data from images)
-image_gen_train = ImageDataGenerator(rescale=1. / 255)
+image_gen_train = ImageDataGenerator(
+    rescale=1. / 255,
+    rotation_range=45,
+    width_shift_range=.15,
+    height_shift_range=.15,
+    horizontal_flip=True,
+    zoom_range=0.5
+)
 
 validation_image_generator = ImageDataGenerator(rescale=1. / 255)  # Generator for our validation data
 

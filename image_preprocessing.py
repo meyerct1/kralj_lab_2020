@@ -172,24 +172,25 @@ def cleaner_upper(dir, ext):
 
 # Main:
 
-#frame_extraction(treated_video_dir, treated_save_dir)
-#frame_extraction(untreated_video_dir, untreated_save_dir)
+frame_extraction(treated_video_dir, treated_save_dir)
+frame_extraction(untreated_video_dir, untreated_save_dir)
 
-#diff_imager(treated_save_dir, treated_saved_dir, 15, 60)
-#diff_imager(untreated_save_dir, untreated_saved_dir, 15, 60)
+diff_imager(treated_save_dir, treated_saved_dir, 15, 60)
+diff_imager(untreated_save_dir, untreated_saved_dir, 15, 60)
 
 test_train_split(treated_saved_dir, train_data, test_data)
 test_train_split(untreated_saved_dir, train_data, test_data)
 
 
-#cleaner_upper("/Library/ML Data/Antibiotic videos/Untreated Data/train", "png")
-#cleaner_upper("/Library/ML Data/Antibiotic videos/Treated Data/train", "png")
-#cleaner_upper("/Library/ML Data/Antibiotic videos/Untreated Data/test", "png")
-#cleaner_upper("/Library/ML Data/Antibiotic videos/Treated Data/test", "png")
+
 #cleaner_upper("/Library/ML Data/Antibiotic videos/Treated Frames", "folder")
 #cleaner_upper("/Library/ML Data/Antibiotic videos/Untreated Frames", "folder")
 #cleaner_upper("/Library/ML Data/Antibiotic videos/Treated Diff", "png")
 #cleaner_upper("/Library/ML Data/Antibiotic videos/Untreated Diff", "png")
+#cleaner_upper("/Library/ML Data/Antibiotic videos/Test", "folder")
+#cleaner_upper("/Library/ML Data/Antibiotic videos/Train", "folder")
+
+
 
 
 
