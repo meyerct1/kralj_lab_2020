@@ -174,6 +174,7 @@ def image_finder(origin_dir, dest_dir, frame_number):
         if subdir.endswith(".avi"):  # if the folder ends with .avi, means it was created by frame_extraction
             dirname = os.fsdecode(subdir)
             img = cv2.imread(subdir + '/frame%d.jpg' % frame_number)
+            img = Image.fromarray(img)
             names = dirname.split("/")
             savename = names[-1]
             img.save("%s %s frame%d).png" % ((dest_dir + "/"), savename, frame_number))
@@ -195,6 +196,11 @@ def image_finder(origin_dir, dest_dir, frame_number):
 #test_train_split(treated_saved_dir, train_data, test_data)
 #test_train_split(untreated_saved_dir, train_data, test_data)
 
+#image_finder(treated_save_dir, "/Library/ML Data/Antibiotic videos/Treated Selected Frames", 200)
+#image_finder(treated_save_dir, "/Library/ML Data/Antibiotic videos/Untreated Selected Frames", 200)
+
+#test_train_split("/Library/ML Data/Antibiotic videos/Treated Selected Frames", train_data, test_data)
+#test_train_split("/Library/ML Data/Antibiotic videos/Untreated Selected Frames", train_data, test_data)
 
 
 #cleaner_upper("/Library/ML Data/Antibiotic videos/Treated Frames", "folder")

@@ -1,8 +1,10 @@
+#Trains a new model from scratch.
 #Libs
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import tensorflow as tf
 import keras as kr
+import tensorflow_hub as hub
 
 from keras.models import Sequential
 from keras.layers import Dense, Conv2D, Flatten, Dropout, MaxPooling2D
@@ -17,11 +19,11 @@ import matplotlib.pyplot as plt
 train_dir = "/Library/ML Data/Antibiotic videos/Train"
 val_dir = "/Library/ML Data/Antibiotic videos/Test"
 
-train_treated_dir = "/Library/ML Data/Antibiotic videos/Train/Treated Diff train"
-train_untreated_dir = "/Library/ML Data/Antibiotic videos/Train/Untreated Diff train"
+train_treated_dir = "/Library/ML Data/Antibiotic videos/Train/Treated Selected Frames train"
+train_untreated_dir = "/Library/ML Data/Antibiotic videos/Train/Untreated Selected Frames train"
 
-val_treated_dir = "/Library/ML Data/Antibiotic videos/Test/Treated Diff val"
-val_untreated_dir = "/Library/ML Data/Antibiotic videos/Test/Untreated Diff val"
+val_treated_dir = "/Library/ML Data/Antibiotic videos/Test/Treated Selected Frames val"
+val_untreated_dir = "/Library/ML Data/Antibiotic videos/Test/Untreated Selected Frames val"
 
 num_treated_tr = len(os.listdir(train_treated_dir))
 num_untreated_tr = len(os.listdir(train_untreated_dir))
@@ -35,22 +37,24 @@ total_val = num_treated_vl + num_untreated_vl
 
 # Variables
 
-batch_size = 10
-epochs = 15 #50?
+batch_size = 4
+epochs = 20 #50?
 IMG_HEIGHT = 150
 IMG_WIDTH = 150
 
 ##########################
 
 #Data preparation (used to generate usable data from images)
-image_gen_train = ImageDataGenerator(
-    rescale=1. / 255,
-    rotation_range=45,
-    width_shift_range=.15,
-    height_shift_range=.15,
-    horizontal_flip=True,
-    zoom_range=0.5
-)
+#image_gen_train = ImageDataGenerator(
+#    rescale=1. / 255,
+#    rotation_range=45,
+#    width_shift_range=.15,
+#    height_shift_range=.15,
+#    horizontal_flip=True,
+#    zoom_range=0.5
+#)
+
+image_gen_train = ImageDataGenerator(rescale=1. / 255)
 
 validation_image_generator = ImageDataGenerator(rescale=1. / 255)  # Generator for our validation data
 
