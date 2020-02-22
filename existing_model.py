@@ -6,12 +6,10 @@ import tensorflow as tf
 import tensorflow_hub as hub
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from imutils import paths
 import argparse
 import random
-import pickle
 import cv2
 
 
@@ -19,61 +17,73 @@ module_selection = ("mobilenet_v2_100_224", 224) #@param ["(\"mobilenet_v2_100_2
 handle_base, pixels = module_selection
 MODULE_HANDLE ="https://tfhub.dev/google/imagenet/{}/feature_vector/4".format(handle_base)
 IMAGE_SIZE = (pixels, pixels)
+print(IMAGE_SIZE)
 print("Using {} with input size {}".format(MODULE_HANDLE, IMAGE_SIZE))
+data_dir = "/Library/ML Data/Antibiotic videos/Data"
 
-BATCH_SIZE = 32 #@param {type:"integer"}
+BATCH_SIZE = 4 #@param {type:"integer"}
 
-# construct the argument parser and parse the arguments
-ap = argparse.ArgumentParser()
-ap.add_argument("-d", "--dataset", required=True,
-	help="path to input dataset of images")
-ap.add_argument("-m", "--model", required=True,
-	help="path to output trained model")
-ap.add_argument("-l", "--label-bin", required=True,
-	help="path to output label binarizer")
-ap.add_argument("-p", "--plot", required=True,
-	help="path to output accuracy/loss plot")
-args = vars(ap.parse_args())
+datagen_kwargs = dict(rescale=1./255, validation_split=.20)
+dataflow_kwargs = dict(target_size=IMAGE_SIZE, batch_size=BATCH_SIZE,
+                   interpolation="bilinear")
 
-# construct the image generator for data augmentation
-aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1,
-	height_shift_range=0.1, shear_range=0.2, zoom_range=0.2,
-	horizontal_flip=True, fill_mode="nearest")
+valid_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
+    **datagen_kwargs)
+valid_generator = valid_datagen.flow_from_directory(
+    data_dir, subset="validation", shuffle=False, **dataflow_kwargs)
 
+do_data_augmentation = False #@param {type:"boolean"}
+if do_data_augmentation:
+  train_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
+      rotation_range=40,
+      horizontal_flip=True,
+      width_shift_range=0.2, height_shift_range=0.2,
+      shear_range=0.2, zoom_range=0.2,
+      **datagen_kwargs)
+else:
+  train_datagen = valid_datagen
+train_generator = train_datagen.flow_from_directory(
+    data_dir,  subset="training", shuffle=True, **dataflow_kwargs)
 
-# initialize the data and labels
-print("[INFO] loading images...")
-data = []
-labels = []
-# grab the image paths and randomly shuffle them
-imagePaths = sorted(list(paths.list_images(args["dataset"])))
-random.seed(42)
-random.shuffle(imagePaths)
-# loop over the input images
-for imagePath in imagePaths:
-	# load the image, resize it to 64x64 pixels (the required input
-	# spatial dimensions of SmallVGGNet), and store the image in the
-	# data list
-	image = cv2.imread(imagePath)
-	image = cv2.resize(image, (64, 64))
-	data.append(image)
-	# extract the class label from the image path and update the
-	# labels list
-	label = imagePath.split(os.path.sep)[-2]
-	labels.append(label)
-# scale the raw pixel intensities to the range [0, 1]
-data = np.array(data, dtype="float") / 255.0
-labels = np.array(labels)
+do_fine_tuning = False #@param {type:"boolean"}
 
+print("Building model with", MODULE_HANDLE)
+model = tf.keras.Sequential([
+    hub.KerasLayer(MODULE_HANDLE, trainable=do_fine_tuning),
+    tf.keras.layers.Dropout(rate=0.2),
+    tf.keras.layers.Dense(train_generator.num_classes, activation='softmax',
+                          kernel_regularizer=tf.keras.regularizers.l2(0.0001))
+])
+model.build((None,)+IMAGE_SIZE+(3,))
+model.summary()
 
-# partition the data into training and testing splits using 75% of
-# the data for training and the remaining 25% for testing
-(trainX, testX, trainY, testY) = train_test_split(data,
-	labels, test_size=0.25, random_state=42)
-# convert the labels from integers to vectors (for 2-class, binary
-# classification you should use Keras' to_categorical function
-# instead as the scikit-learn's LabelBinarizer will not return a
-# vector)
-lb = LabelBinarizer()
-trainY = lb.fit_transform(trainY)
-testY = lb.transform(testY)
+model.compile(
+  optimizer=tf.keras.optimizers.SGD(lr=0.005, momentum=0.9),
+  loss=tf.keras.losses.CategoricalCrossentropy(label_smoothing=0.1),
+  metrics=['accuracy'])
+
+steps_per_epoch = train_generator.samples // train_generator.batch_size
+validation_steps = valid_generator.samples // valid_generator.batch_size
+hist = model.fit(
+    train_generator,
+    epochs=5, steps_per_epoch=steps_per_epoch,
+    validation_data=valid_generator,
+    validation_steps=validation_steps).history
+
+plt.figure()
+plt.ylabel("Loss (training and validation)")
+plt.xlabel("Training Steps")
+plt.ylim([0,2])
+plt.plot(hist["loss"])
+plt.plot(hist["val_loss"])
+
+plt.figure()
+plt.ylabel("Accuracy (training and validation)")
+plt.xlabel("Training Steps")
+plt.ylim([0,1])
+plt.plot(hist["accuracy"])
+plt.plot(hist["val_accuracy"])
+plt.show()
+
+saved_model_path = "/tmp/saved_flowers_model"
+tf.saved_model.save(model, saved_model_path)
