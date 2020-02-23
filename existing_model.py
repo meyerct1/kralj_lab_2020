@@ -12,8 +12,12 @@ import argparse
 import random
 import cv2
 
+print("TF version:", tf.__version__)
+print("Hub version:", hub.__version__)
+print("GPU is", "available" if tf.test.is_gpu_available() else "NOT AVAILABLE")
 
-module_selection = ("mobilenet_v2_100_224", 224) #@param ["(\"mobilenet_v2_100_224\", 224)", "(\"inception_v3\", 299)"] {type:"raw", allow-input: true}
+
+module_selection = ("inception_v3", 299) #@param ["(\"mobilenet_v2_100_224\", 224)", "(\"inception_v3\", 299)"] {type:"raw", allow-input: true}
 handle_base, pixels = module_selection
 MODULE_HANDLE ="https://tfhub.dev/google/imagenet/{}/feature_vector/4".format(handle_base)
 IMAGE_SIZE = (pixels, pixels)
@@ -21,7 +25,7 @@ print(IMAGE_SIZE)
 print("Using {} with input size {}".format(MODULE_HANDLE, IMAGE_SIZE))
 data_dir = "/Library/ML Data/Antibiotic videos/Data"
 
-BATCH_SIZE = 4 #@param {type:"integer"}
+BATCH_SIZE = 100 #@param {type:"integer"}
 
 datagen_kwargs = dict(rescale=1./255, validation_split=.20)
 dataflow_kwargs = dict(target_size=IMAGE_SIZE, batch_size=BATCH_SIZE,
@@ -66,7 +70,7 @@ steps_per_epoch = train_generator.samples // train_generator.batch_size
 validation_steps = valid_generator.samples // valid_generator.batch_size
 hist = model.fit(
     train_generator,
-    epochs=5, steps_per_epoch=steps_per_epoch,
+    epochs=10, steps_per_epoch=steps_per_epoch,
     validation_data=valid_generator,
     validation_steps=validation_steps).history
 
@@ -85,5 +89,5 @@ plt.plot(hist["accuracy"])
 plt.plot(hist["val_accuracy"])
 plt.show()
 
-saved_model_path = "/tmp/saved_flowers_model"
-tf.saved_model.save(model, saved_model_path)
+#saved_model_path = ""
+#tf.saved_model.save(model, saved_model_path)
