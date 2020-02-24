@@ -14,9 +14,7 @@ import shutil
 print(cv2.__version__)
 
 #todo
-## make sure everything runs smoothly, do a full run through test (done)
-## generalize functions one read and one save directory frame_extraction and test_train_split (done)
-
+### na
 
 ########################################################
 
@@ -91,7 +89,7 @@ def diff_imager(read_dir, save_dir, first_frame, last_frame):
             # try converting these to doubles -- to increase resolution.
                 # diff has the required difference data
                 diff = np.abs(img1.astype(np.uint) - img2.astype(np.uint)).astype(np.uint8)
-                print(type(diff))
+                #print(type(diff))
 
                 # Convert from array and save as image
                 img = Image.fromarray(diff)
@@ -190,15 +188,17 @@ def image_finder(origin_dir, dest_dir, frame_number):
 #frame_extraction(treated_video_dir, treated_save_dir)
 #frame_extraction(untreated_video_dir, untreated_save_dir)
 
-#diff_imager(treated_save_dir, treated_saved_dir, 15, 120)
-#diff_imager(untreated_save_dir, untreated_saved_dir, 15, 120)
+for i in range(10,20):
+    for j in range(50, 60):
+        diff_imager(treated_save_dir, treated_saved_dir, i, j)
+        diff_imager(untreated_save_dir, untreated_saved_dir, i, j)
 
 #test_train_split(treated_saved_dir, train_data, test_data)
 #test_train_split(untreated_saved_dir, train_data, test_data)
 
-for i in range(100,200):
-    image_finder(treated_save_dir, "/Library/ML Data/Antibiotic videos/Treated Selected Frames", i)
-    image_finder(treated_save_dir, "/Library/ML Data/Antibiotic videos/Untreated Selected Frames", i)
+#for i in range(100,200):
+#    image_finder(treated_save_dir, "/Library/ML Data/Antibiotic videos/Treated Selected Frames", i)
+#    image_finder(treated_save_dir, "/Library/ML Data/Antibiotic videos/Untreated Selected Frames", i)
 
 #test_train_split("/Library/ML Data/Antibiotic videos/Treated Selected Frames", train_data, test_data)
 #test_train_split("/Library/ML Data/Antibiotic videos/Untreated Selected Frames", train_data, test_data)

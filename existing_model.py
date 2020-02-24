@@ -1,3 +1,6 @@
+#Using an existing model from Google to retrain for bacterial-identification purposes.
+
+#Libs
 import itertools
 import os
 import matplotlib.pylab as plt
@@ -36,7 +39,7 @@ valid_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
 valid_generator = valid_datagen.flow_from_directory(
     data_dir, subset="validation", shuffle=False, **dataflow_kwargs)
 
-do_data_augmentation = False #@param {type:"boolean"}
+do_data_augmentation = True #@param {type:"boolean"}
 if do_data_augmentation:
   train_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
       rotation_range=40,
