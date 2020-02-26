@@ -39,7 +39,7 @@ valid_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
 valid_generator = valid_datagen.flow_from_directory(
     data_dir, subset="validation", shuffle=False, **dataflow_kwargs)
 
-do_data_augmentation = True #@param {type:"boolean"}
+do_data_augmentation = False #@param {type:"boolean"}
 if do_data_augmentation:
   train_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
       rotation_range=40,
@@ -92,5 +92,5 @@ plt.plot(hist["accuracy"])
 plt.plot(hist["val_accuracy"])
 plt.show()
 
-#saved_model_path = ""
-#tf.saved_model.save(model, saved_model_path)
+saved_model_path = "/Library/ML Data/Antibiotic videos/Models/"
+tf.saved_model.save(model, saved_model_path)
