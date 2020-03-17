@@ -15,6 +15,9 @@ import argparse
 import random
 import cv2
 
+#Import custom
+#from image_preprocessing import diff_imager
+
 print("TF version:", tf.__version__)
 print("Hub version:", hub.__version__)
 print("GPU is", "available" if tf.test.is_gpu_available() else "NOT AVAILABLE")

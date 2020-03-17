@@ -188,10 +188,20 @@ def image_finder(origin_dir, dest_dir, frame_number):
 #frame_extraction(treated_video_dir, treated_save_dir)
 #frame_extraction(untreated_video_dir, untreated_save_dir)
 
-for i in range(10,20):
-    for j in range(50, 60):
-        diff_imager(treated_save_dir, treated_saved_dir, i, j)
-        diff_imager(untreated_save_dir, untreated_saved_dir, i, j)
+#for i in range(0,5):
+#    for j in range(10, 15):
+#        diff_imager(treated_save_dir, treated_saved_dir, i, j)
+#        diff_imager(untreated_save_dir, untreated_saved_dir, i, j)
+
+#cleaner_upper(treated_saved_dir,"png")
+#cleaner_upper(untreated_saved_dir, "png")
+
+# go through different rg variables
+# graph rg versus acc
+rg = 5
+for i in range(5,30):
+    diff_imager(untreated_save_dir,untreated_saved_dir,i, i+rg)
+    diff_imager(treated_save_dir, treated_saved_dir, i, i + rg)
 
 #test_train_split(treated_saved_dir, train_data, test_data)
 #test_train_split(untreated_saved_dir, train_data, test_data)
