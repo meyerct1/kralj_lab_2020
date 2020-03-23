@@ -55,7 +55,7 @@ else:
 train_generator = train_datagen.flow_from_directory(
     data_dir,  subset="training", shuffle=True, **dataflow_kwargs)
 
-do_fine_tuning = False #@param {type:"boolean"}
+do_fine_tuning = True #@param {type:"boolean"}
 
 print("Building model with", MODULE_HANDLE)
 model = tf.keras.Sequential([
@@ -76,7 +76,7 @@ steps_per_epoch = train_generator.samples // train_generator.batch_size
 validation_steps = valid_generator.samples // valid_generator.batch_size
 hist = model.fit(
     train_generator,
-    epochs=10, steps_per_epoch=steps_per_epoch,
+    epochs=20, steps_per_epoch=steps_per_epoch,
     validation_data=valid_generator,
     validation_steps=validation_steps).history
 
