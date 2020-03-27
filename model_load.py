@@ -5,6 +5,7 @@ from keras.preprocessing import image
 import numpy as np
 from PIL import Image
 from skimage.io import imread
+import os
 
 #model_path = '/Library/ML Data/Antibiotic videos/Models/diff_augmented_5.10,15.20'
 #saved_model = tf.keras.models.load_model(model_path)
@@ -22,12 +23,8 @@ from skimage.io import imread
 
 img_width = 299
 img_height = 299
-img_path = '/Library/ML Data/Antibiotic videos/Data/Treated Diff/ 7_movie.avi - diff(11 - 16) resized.png'
 
-img = Image.open('/Library/ML Data/Antibiotic videos/Data/Treated Diff/ 7_movie.avi - diff(11 - 16) resized.png')
-print(img.size)
-
-loaded = tf.keras.models.load_model('/Library/ML Data/Antibiotic videos/Models/Batch 2/0 to 30 rg = 5')
+loaded = tf.keras.models.load_model('/Library/ML Data/Bionicles.tmp/Models/New')
 
 print(list(loaded.signatures.keys()))
 infer = loaded.signatures["serving_default"]
@@ -70,19 +67,68 @@ print("BioticNet has {} trainable variables: {}, ...".format(
 loaded.compile(loss=tf.keras.losses.CategoricalCrossentropy(label_smoothing=0.1),
                optimizer=tf.keras.optimizers.SGD(lr=0.005, momentum=0.9), metrics=['accuracy'])
 
-test_image = image.load_img(img_path, target_size=(img_width, img_height))
-test_image = image.img_to_array(test_image)
-test_image = np.expand_dims(test_image, axis=0)
-#test_image = test_image.reshape(img_width, img_height)
-result = loaded.predict(test_image)
-print(loaded.predict(test_image))
-print(result)
+#test_image = image.load_img(img_path, target_size=(img_width, img_height))
+#test_image = image.img_to_array(test_image)
+#test_image = np.expand_dims(test_image, axis=0)
+##test_image = test_image.reshape(img_width, img_height)
+#result = loaded.predict(test_image)
+#print(result[0,0])
 
-img2 = '/Library/ML Data/Antibiotic videos/Data/Untreated Diff/ 1_movie.avi - diff(11 - 16).png'
+unteated_sum = 0
+treated_sum = 0
+rootdir = '/Library/ML Data/Bionicles.tmp/Testing/Tht Treated Folders/'
+i = 0
+for subdir, dirs, files in os.walk(rootdir):
+    #print(dirs)
+        #t = open(s + " result.txt", "w+")
+        #t.close()
+    #print(dirs)
+    #print(i)
+    #print(dirs[i])
+    n = 0
+d = os.listdir(rootdir)
+del d[2]
 
-test_image = image.load_img(img2, target_size=(img_width, img_height))
-test_image = image.img_to_array(test_image)
-test_image = np.expand_dims(test_image, axis=0)
-result = loaded.predict(test_image)
-print(loaded.predict(test_image))
-print(result)
+i = 0
+print("test")
+print(d)
+for dir in d:
+    #print(dir)
+    n = 0
+    #print(i)
+    curr = rootdir + dir
+    unteated_sum = 0
+    treated_sum = 0
+    for file in os.listdir(curr):
+        #print(file)
+        if file.endswith(".png"):
+            p = os.path.join(curr, file)
+
+            test_image = image.load_img(p, target_size=(img_width, img_height))
+            test_image = image.img_to_array(test_image)
+            test_image = np.expand_dims(test_image, axis=0)
+            result = loaded.predict(test_image)
+
+            img = Image.open(p)
+            #print(img.size)
+
+            unteated_sum = unteated_sum + result[0,0]
+            treated_sum = treated_sum + result[0,1]
+            #print(treated_sum)
+
+            n = n + 1
+
+    if n == 0:
+         untreated_avg = 0
+         treated_avg = 0
+    else:
+         untreated_avg = unteated_sum/n
+         treated_avg = treated_sum/n
+
+    print(d[i] + '\n' + "treated avg: " + str(untreated_avg) +
+                         " untreated avg: " + str(treated_avg) + '\n')
+        #with open('result.txt', "a+") as output_file:
+        #    output_file.write(s + '\n' + "untreated avg: " + untreated_avg +
+        #                 " treatead avg: " + treated_avg + '\n')
+    i = i + 1
+

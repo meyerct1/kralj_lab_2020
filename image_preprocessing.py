@@ -7,6 +7,7 @@ import os
 import numpy as np
 from PIL import Image
 from shutil import copyfile
+from shutil import copy
 import math
 import glob
 import random
@@ -160,11 +161,11 @@ def cleaner_upper(dir, ext):
     if ext == "folder":
         filelist = [file for file in glob.glob(dir + "/*/", recursive=True)]
         for f in filelist:
-            shutil.rmtree(f)
+            shutil.rmtree(f)     #unlinks all the folders
     else:
         filelist = [file for file in glob.glob(dir + "**/*.%s" % (ext), recursive=True)]
         for f in filelist:
-            os.remove(f)
+            os.remove(f)        #removes files
 
 # Finds specific images ina folder (used for looking up specific frames)
 def image_finder(origin_dir, dest_dir, frame_number):
@@ -198,49 +199,44 @@ def resize_all(path, size):
 
 # Main:
 
-#frame_extraction(treated_video_dir, treated_save_dir)
-#frame_extraction(untreated_video_dir, untreated_save_dir)
-
-#for i in range(0,5):
-#    for j in range(10, 15):
-#        diff_imager(treated_save_dir, treated_saved_dir, i, j)
-#        diff_imager(untreated_save_dir, untreated_saved_dir, i, j)
-
-#cleaner_upper('/Library/ML Data/Antibiotic videos/Data/Treated Diff',"png")
-#cleaner_upper('/Library/ML Data/Antibiotic videos/Data/Untreated Diff', "png")
-
-# go through different rg variables
-# graph rg versus acc
-
 #rg = 5
 #for i in range(5, 30):
-#    diff_imager(untreated_save_dir, untreated_saved_dir, i, i+rg)
-#    diff_imager(treated_save_dir, treated_saved_dir, i, i + rg)
+#    diff_imager('/Library/ML Data/Antibiotic videos/Test Data 2020-03-24 - ThT movies/Treated Frames', '/Library/ML Data/Antibiotic videos/Test Data 2020-03-24 - ThT movies/Treated Diff', i, i+rg)
+#    diff_imager('/Library/ML Data/Antibiotic videos/Test Data 2020-03-24 - ThT movies/Untreated Frames', '/Library/ML Data/Antibiotic videos/Test Data 2020-03-24 - ThT movies/Untreated Diff', i, i+rg)
 
-#resize_all('/Library/ML Data/Antibiotic videos/Data/Treated Diff/', 299)
-#resize_all('/Library/ML Data/Antibiotic videos/Data/Untreated Diff/', 299)
-#resize_all('/Library/ML Data/Antibiotic videos/Past Data/0 to 30 rg = 5', 299)
+#resize_all('/Library/ML Data/Antibiotic videos/Test Data 2020-03-24 - ThT movies/Treated Diff/', 299)
+#resize_all('/Library/ML Data/Antibiotic videos/Test Data 2020-03-24 - ThT movies/Untreated Diff/', 299)
+#im = Image.open('/Library/ML Data/Antibiotic videos/Data/Treated Diff/ 7_movie.avi - diff(11 - 16) resized.png')
+#print(im.size)
 
-im = Image.open('/Library/ML Data/Antibiotic videos/Data/Treated Diff/ 7_movie.avi - diff(11 - 16) resized.png')
-print(im.size)
+## esgettit
+path = '/Library/ML Data/Antibiotic videos/Testing/Tht Treated'
+for i in range(0,50):
+    for file in os.listdir(path):
+        if file.endswith(".png"):
+            print(path + "/" + file)
+            splittor = file.split(".")
+            if (splittor[0] == (" " + str(i) + "_movie")):
+                if not os.path.exists(path + "/" + splittor[0]):
+                    os.makedirs(path + "/" + splittor[0])
+                copy(path + "/" + file, path + "/" + splittor[0])
+                print(splittor[0])
+                print("succ")
+            elif (splittor[0] == (" " + str(i) + "_movie2")):
+                if not os.path.exists(path + "/" + splittor[0]):
+                    os.makedirs(path + "/" + splittor[0])
+                copy(path + "/" + file, path + "/" + splittor[0])
+                print(splittor[0])
+                print("succ")
 
-#test_train_split(treated_saved_dir, train_data, test_data)
-#test_train_split(untreated_saved_dir, train_data, test_data)
-
-#for i in range(100,200):
-#    image_finder(treated_save_dir, "/Library/ML Data/Antibiotic videos/Treated Selected Frames", i)
-#    image_finder(treated_save_dir, "/Library/ML Data/Antibiotic videos/Untreated Selected Frames", i)
-
-#test_train_split("/Library/ML Data/Antibiotic videos/Treated Selected Frames", train_data, test_data)
-#test_train_split("/Library/ML Data/Antibiotic videos/Untreated Selected Frames", train_data, test_data)
+            elif (splittor[0] == (" " + str(i) + "_movieGBF")):
+                if not os.path.exists(path + "/" + splittor[0]):
+                    os.makedirs(path + "/" + splittor[0])
+                copy(path + "/" + file, path + "/" + splittor[0])
+                print(splittor[0])
+                print("succ")
 
 
-#cleaner_upper("/Library/ML Data/Antibiotic videos/Treated Frames", "folder")
-#cleaner_upper("/Library/ML Data/Antibiotic videos/Untreated Frames", "folder")
-#cleaner_upper("/Library/ML Data/Antibiotic videos/Treated Diff", "png")
-#cleaner_upper("/Library/ML Data/Antibiotic videos/Untreated Diff", "png")
-#cleaner_upper("/Library/ML Data/Antibiotic videos/Test", "folder")
-#cleaner_upper("/Library/ML Data/Antibiotic videos/Train", "folder")
 
 
 
