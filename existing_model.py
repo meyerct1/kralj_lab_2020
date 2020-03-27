@@ -31,7 +31,7 @@ print(IMAGE_SIZE)
 print("Using {} with input size {}".format(MODULE_HANDLE, IMAGE_SIZE))
 data_dir = "/Library/ML Data/Antibiotic videos/Data"
 
-BATCH_SIZE = 100 #@param {type:"integer"}
+BATCH_SIZE = 64 #@param {type:"integer"}
 
 datagen_kwargs = dict(rescale=1./255, validation_split=.20)
 dataflow_kwargs = dict(target_size=IMAGE_SIZE, batch_size=BATCH_SIZE,
@@ -55,7 +55,7 @@ else:
 train_generator = train_datagen.flow_from_directory(
     data_dir,  subset="training", shuffle=True, **dataflow_kwargs)
 
-do_fine_tuning = True #@param {type:"boolean"}
+do_fine_tuning = False #@param {type:"boolean"}
 
 print("Building model with", MODULE_HANDLE)
 model = tf.keras.Sequential([

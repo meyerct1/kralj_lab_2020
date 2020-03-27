@@ -11,10 +11,11 @@ import math
 import glob
 import random
 import shutil
+import os, sys
 print(cv2.__version__)
 
 #todo
-### na
+### Implement resize
 
 ########################################################
 
@@ -179,6 +180,18 @@ def image_finder(origin_dir, dest_dir, frame_number):
         else:
             continue
 
+def resize_all(path, size):
+
+    dirs = os.listdir(path)
+    for file in dirs:
+        if file.endswith('.png'):
+            print(file)
+            im = Image.open(path + file)
+            f, e = os.path.splitext(path + file)
+            imResize = im.resize((size, size), Image.ANTIALIAS)
+            imResize.save(f + ' resized.png', 'PNG', quality=90)
+            print(imResize.size)
+            print(f + ' resized.png')
 
 
 ########################################################
@@ -193,15 +206,23 @@ def image_finder(origin_dir, dest_dir, frame_number):
 #        diff_imager(treated_save_dir, treated_saved_dir, i, j)
 #        diff_imager(untreated_save_dir, untreated_saved_dir, i, j)
 
-#cleaner_upper(treated_saved_dir,"png")
-#cleaner_upper(untreated_saved_dir, "png")
+#cleaner_upper('/Library/ML Data/Antibiotic videos/Data/Treated Diff',"png")
+#cleaner_upper('/Library/ML Data/Antibiotic videos/Data/Untreated Diff', "png")
 
 # go through different rg variables
 # graph rg versus acc
-rg = 5
-for i in range(5,30):
-    diff_imager(untreated_save_dir,untreated_saved_dir,i, i+rg)
-    diff_imager(treated_save_dir, treated_saved_dir, i, i + rg)
+
+#rg = 5
+#for i in range(5, 30):
+#    diff_imager(untreated_save_dir, untreated_saved_dir, i, i+rg)
+#    diff_imager(treated_save_dir, treated_saved_dir, i, i + rg)
+
+#resize_all('/Library/ML Data/Antibiotic videos/Data/Treated Diff/', 299)
+#resize_all('/Library/ML Data/Antibiotic videos/Data/Untreated Diff/', 299)
+#resize_all('/Library/ML Data/Antibiotic videos/Past Data/0 to 30 rg = 5', 299)
+
+im = Image.open('/Library/ML Data/Antibiotic videos/Data/Treated Diff/ 7_movie.avi - diff(11 - 16) resized.png')
+print(im.size)
 
 #test_train_split(treated_saved_dir, train_data, test_data)
 #test_train_split(untreated_saved_dir, train_data, test_data)
