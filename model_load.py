@@ -6,20 +6,7 @@ import numpy as np
 from PIL import Image
 from skimage.io import imread
 import os
-
-#model_path = '/Library/ML Data/Antibiotic videos/Models/diff_augmented_5.10,15.20'
-#saved_model = tf.keras.models.load_model(model_path)
-
-#module_selection = ("inception_v3", 299) #@param ["(\"mobilenet_v2_100_224\", 224)", "(\"inception_v3\", 299)"] {type:"raw", allow-input: true}
-#handle_base, pixels = module_selection
-
-#MODULE_HANDLE ="https://tfhub.dev/google/imagenet/{}/feature_vector/4".format(handle_base)
-#IMAGE_SIZE = (pixels, pixels)
-
-#saved_model.build((None,)+IMAGE_SIZE+(3,))
-#saved_model.summary()
-## show me the model.
-#saved_model.show()
+import statistics
 
 img_width = 299
 img_height = 299
@@ -35,72 +22,42 @@ print("BioticNet has {} trainable variables: {}, ...".format(
           len(loaded.trainable_variables),
           ", ".join([v.name for v in loaded.trainable_variables[:5]])))
 
-
-#loaded.build()
-#loaded.summary()
-
-#background = Image.new('RGBA', png.size, (255,255,255))
-
-#alpha_composite = Image.alpha_composite(background, png)
-#alpha_composite.save('foo.jpg', 'JPEG', quality=80)
-
-#png = Image.open(img_path)
-#png.load() # required for png.split()
-#color=(255, 255, 255)
-#x = np.array(png)
-#print((x.shape))
-#r, g, b, a = np.rollaxis(x, axis=-1)
-#r[a == 0] = color[0]
-#g[a == 0] = color[1]
-#b[a == 0] = color[2]
-#x = np.dstack([r, g, b, a])
-#png = Image.fromarray(x, 'RGBA')
-
-#alpha = png.split()[-1]
-#png.putalpha(alpha)
-
-#background = Image.new("RGB", png.size, (255, 255, 255))
-#background.paste(png, mask=png.split()[3]) # 3 is the alpha channel
-
-#png.save("predict1.png")
-#print(type(png))
 loaded.compile(loss=tf.keras.losses.CategoricalCrossentropy(label_smoothing=0.1),
                optimizer=tf.keras.optimizers.SGD(lr=0.005, momentum=0.9), metrics=['accuracy'])
 
-#test_image = image.load_img(img_path, target_size=(img_width, img_height))
-#test_image = image.img_to_array(test_image)
-#test_image = np.expand_dims(test_image, axis=0)
-##test_image = test_image.reshape(img_width, img_height)
-#result = loaded.predict(test_image)
-#print(result[0,0])
-
 unteated_sum = 0
 treated_sum = 0
-rootdir = '/Library/ML Data/Bionicles.tmp/Testing/Tht Treated Folders/'
+rootdir = '/Library/ML Data/Bionicles.tmp/Testing/Treated Folders/'
 i = 0
 for subdir, dirs, files in os.walk(rootdir):
-    #print(dirs)
-        #t = open(s + " result.txt", "w+")
-        #t.close()
-    #print(dirs)
-    #print(i)
-    #print(dirs[i])
-    n = 0
-d = os.listdir(rootdir)
-del d[2]
 
-i = 0
-print("test")
-print(d)
-for dir in d:
-    #print(dir)
     n = 0
-    #print(i)
+
+d = os.listdir(rootdir)
+
+if '.DS_Store' in d:
+    ind = d.index('.DS_Store')
+    del d[ind]
+
+len = len(d)
+i = 0
+print(d)
+total_treated = 0
+total_untreated = 0
+for dir in d:
+
+    n = 0
+
     curr = rootdir + dir
+
     unteated_sum = 0
     treated_sum = 0
+
+    untreated_list = []
+    treated_list = []
+
     for file in os.listdir(curr):
-        #print(file)
+
         if file.endswith(".png"):
             p = os.path.join(curr, file)
 
@@ -110,11 +67,9 @@ for dir in d:
             result = loaded.predict(test_image)
 
             img = Image.open(p)
-            #print(img.size)
 
             unteated_sum = unteated_sum + result[0,0]
             treated_sum = treated_sum + result[0,1]
-            #print(treated_sum)
 
             n = n + 1
 
@@ -122,13 +77,20 @@ for dir in d:
          untreated_avg = 0
          treated_avg = 0
     else:
-         untreated_avg = unteated_sum/n
-         treated_avg = treated_sum/n
+        untreated_avg = unteated_sum/n
+        treated_avg = treated_sum/n
 
+        treated_list.append(untreated_avg)
+        untreated_list.append(treated_avg)
+
+    total_untreated = total_untreated + untreated_avg
+    total_treated = total_treated + treated_avg
     print(d[i] + '\n' + "treated avg: " + str(untreated_avg) +
                          " untreated avg: " + str(treated_avg) + '\n')
-        #with open('result.txt', "a+") as output_file:
-        #    output_file.write(s + '\n' + "untreated avg: " + untreated_avg +
-        #                 " treatead avg: " + treated_avg + '\n')
+
+
     i = i + 1
 
+total_treated_avg = total_treated/len
+total_untreated_avg = total_untreated/len
+print("total average treated: " + str(statistics.mean(treated_list)) + " untreated: " + str(statistics.mean(untreated_list)))
