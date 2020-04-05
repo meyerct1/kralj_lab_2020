@@ -10,7 +10,13 @@ To adress this problem, a machine learning framework is being developed in order
 
 
 *main_script.py
-  The file that runs the machine learning model. Currently using the Keras wrapper on Tensorflow.
+  Trains a new machine learning model. Currently using the Keras wrapper on Tensorflow.
+
+*existing_model.py
+  Uses an existing image net model and retrains on new data.
+
+*model_load.py
+  Loads a saved_model file and returns predictions on new data.
   
 *image_preprocessing.py
   Functions that help with processing images to feed into the model.
