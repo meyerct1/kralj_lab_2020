@@ -4,7 +4,7 @@
 
 import cv2
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageChops
 import shutil
 import math
 import glob
@@ -185,7 +185,39 @@ def files_to_folders(path, ext):
                     print(split[0])
                     print("s")
 
-########################################################
+# Crops an image into multiple pieces of size (chopsize, chopsize)
+def image_chop(infile, dest, chopsize):
+
+    img = Image.open(infile)
+    width, height = img.size
+
+    # get the name of the file
+    split1 = infile.split("/")
+    split2 = split1[-1].split(".")
+    fname = split2[0]
+
+    # Save Chops of original image
+    for x in range(0, width, chopsize):
+       for y in range(0, height, chopsize):
+          box = (x, y,
+                 x+chopsize if x+chopsize <  width else  width - 1, # if dimensions wrong (out of bounds), adjusts
+                 y+chopsize if y+chopsize < height else height - 1)
+          print('%s %s' % (infile, box))
+          im = img.crop(box)
+          print(type(im))
+          im.save('%s.x%03d.y%03d.png' % (dest + "/" + fname, x, y))
+
+#  Removes borders of an image (note: overwrites original file)
+def trim(path):
+    im = Image.open(path)
+    bg = Image.new(im.mode, im.size, im.getpixel((0, 0)))  # looks at top left pixel to determine the border color
+    diff = ImageChops.difference(im, bg)
+    diff = ImageChops.add(diff, diff, 2.0, -100)
+    bbox = diff.getbbox()    # creates a mask
+    if bbox:
+        cropped = im.crop(bbox)
+        cropped.save(path)      # saves image
+#################################
 
 # Main:
 
@@ -203,11 +235,11 @@ def files_to_folders(path, ext):
 #print(im.size)
 
 #Movies all files to individual folders
-path = '/Library/ML Data/kralj-lab.tmp/Testing/Tht Treated'
+#path = '/Library/ML Data/kralj-lab.tmp/Testing/Tht Treated'
 
-files_to_folders(path, "_movie")
-files_to_folders(path, "_movie2")
-files_to_folders(path, "_movieGBF")
+#files_to_folders(path, "_movie")
+#files_to_folders(path, "_movie2")
+#files_to_folders(path, "_movieGBF")
 
 
 
