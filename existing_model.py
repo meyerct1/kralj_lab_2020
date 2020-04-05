@@ -1,38 +1,30 @@
+#Eugene Miller
 #Using an existing model from Google to retrain for bacterial-identification purposes.
 
-#Libs
-import itertools
-import os
 import matplotlib.pylab as plt
-import numpy as np
 import tensorflow as tf
 import tensorflow_hub as hub
-from sklearn.preprocessing import LabelBinarizer
-from sklearn.model_selection import train_test_split
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from imutils import paths
-import argparse
-import random
-import cv2
 
-#Import custom
-#from image_preprocessing import diff_imager
+data_dir = "/Library/ML Data/kralj-lab.tmp/Data"        # Directory with data, seperated into subfolders by category
+model_save_dir = "/Library/ML Data/kralj-lab.tmp/Models/"       # Directory where the model will be saved (saved_model format)
+BATCH_SIZE = 64 #@param {type:"integer"}
+do_data_augmentation = False #@param {type:"boolean"}   # True enables random resize/rotation of images, not very useful for our purposes
+do_fine_tuning = False #@param {type:"boolean"}         # True enables fine tuning; transfer learning
+dropout_rate = 0.2      # probability a neuron is deactivated for an training step
 
 print("TF version:", tf.__version__)
 print("Hub version:", hub.__version__)
 print("GPU is", "available" if tf.test.is_gpu_available() else "NOT AVAILABLE")
 
-
+# Using an existing trained image recognition model (MAKE SURE DATA IMAGES ARE OF THE APPROPRIATE RESOLUTION)
 module_selection = ("inception_v3", 299) #@param ["(\"mobilenet_v2_100_224\", 224)", "(\"inception_v3\", 299)"] {type:"raw", allow-input: true}
 handle_base, pixels = module_selection
 MODULE_HANDLE ="https://tfhub.dev/google/imagenet/{}/feature_vector/4".format(handle_base)
 IMAGE_SIZE = (pixels, pixels)
 print(IMAGE_SIZE)
 print("Using {} with input size {}".format(MODULE_HANDLE, IMAGE_SIZE))
-data_dir = "/Library/ML Data/Antibiotic videos/Data"
 
-BATCH_SIZE = 64 #@param {type:"integer"}
-
+# defining test/training datasets
 datagen_kwargs = dict(rescale=1./255, validation_split=.20)
 dataflow_kwargs = dict(target_size=IMAGE_SIZE, batch_size=BATCH_SIZE,
                    interpolation="bilinear")
@@ -42,7 +34,7 @@ valid_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
 valid_generator = valid_datagen.flow_from_directory(
     data_dir, subset="validation", shuffle=False, **dataflow_kwargs)
 
-do_data_augmentation = False #@param {type:"boolean"}
+# data augmentation code (data randomization) only applies to training set
 if do_data_augmentation:
   train_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
       rotation_range=40,
@@ -55,18 +47,19 @@ else:
 train_generator = train_datagen.flow_from_directory(
     data_dir,  subset="training", shuffle=True, **dataflow_kwargs)
 
-do_fine_tuning = False #@param {type:"boolean"}
-
 print("Building model with", MODULE_HANDLE)
+
+# model superparameters, dropout, regularization, activation layer
 model = tf.keras.Sequential([
     hub.KerasLayer(MODULE_HANDLE, trainable=do_fine_tuning),
-    tf.keras.layers.Dropout(rate=0.2),
+    tf.keras.layers.Dropout(rate=dropout_rate),
     tf.keras.layers.Dense(train_generator.num_classes, activation='softmax',
                           kernel_regularizer=tf.keras.regularizers.l2(0.0001))
 ])
 model.build((None,)+IMAGE_SIZE+(3,))
 model.summary()
 
+# Compiler
 model.compile(
   optimizer=tf.keras.optimizers.SGD(lr=0.005, momentum=0.9),
   loss=tf.keras.losses.CategoricalCrossentropy(label_smoothing=0.1),
@@ -74,12 +67,15 @@ model.compile(
 
 steps_per_epoch = train_generator.samples // train_generator.batch_size
 validation_steps = valid_generator.samples // valid_generator.batch_size
+
+# Run
 hist = model.fit(
     train_generator,
-    epochs=20, steps_per_epoch=steps_per_epoch,
+    epochs=15, steps_per_epoch=steps_per_epoch,
     validation_data=valid_generator,
     validation_steps=validation_steps).history
 
+# Results
 plt.figure()
 plt.ylabel("Loss (training and validation)")
 plt.xlabel("Training Steps")
@@ -95,5 +91,6 @@ plt.plot(hist["accuracy"])
 plt.plot(hist["val_accuracy"])
 plt.show()
 
-saved_model_path = "/Library/ML Data/Antibiotic videos/Models/"
+# Save
+saved_model_path = model_save_dir
 tf.saved_model.save(model, saved_model_path)

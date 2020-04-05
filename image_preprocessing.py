@@ -1,44 +1,19 @@
 #Eugene Miller
-#Preprocessing Image functions for Kralj-Lab project (ML training on bacterial antibiotic resistance).
+#Preprocessing/Data Manipulation functions for Kralj-Lab project (ML training on bacterial antibiotic resistance).
 ########################################################
 
 import cv2
-import os
 import numpy as np
 from PIL import Image
-from shutil import copyfile
-from shutil import copy
+import shutil
 import math
 import glob
 import random
-import shutil
 import os, sys
 print(cv2.__version__)
 
 #todo
-### Implement resize
-
-########################################################
-
-# Directories (frame extraction)
-treated_video_dir = "/Library/ML Data/Antibiotic videos/Treated AVIs"
-untreated_video_dir = "/Library/ML Data/Antibiotic videos/Untreated AVIs"
-treated_save_dir = "/Library/ML Data/Antibiotic videos/Treated Frames"
-untreated_save_dir = "/Library/ML Data/Antibiotic videos/Untreated Frames"
-
-# Directories (diff image calculation)
-treated_read_dir = "/Library/ML Data/Antibiotic videos/Treated Frames"
-treated_saved_dir = "/Library/ML Data/Antibiotic videos/Treated Diff"
-
-untreated_read_dir = "/Library/ML Data/Antibiotic videos/Untreated Frames"
-untreated_saved_dir = "/Library/ML Data/Antibiotic videos/Untreated Diff"
-
-train_data = "/Library/ML Data/Antibiotic videos/Train"
-test_data = "/Library/ML Data/Antibiotic videos/Test"
-
-# Frame #s for difference images
-first_frame = 15
-last_frame = 60
+###
 
 ########################################################
 
@@ -137,7 +112,7 @@ def test_train_split(origin_dir, train_dir, val_dir):
 
         fileloc = origin_dir + "/" + savename  # file location as string
         filedest = train_dir + "/" + extname + " train/" + savename # file dest as string
-        copyfile(fileloc, filedest) # copies file into new folder
+        shutil.copyfile(fileloc, filedest) # copies file into new folder
         print(filedest)
 
     for j in range(test_sz):        # assigns files to test directory
@@ -153,7 +128,7 @@ def test_train_split(origin_dir, train_dir, val_dir):
         filedest = val_dir + "/" +  extname + " val/" + savename  # file dest as string
         print(fileloc)
         print(filedest)
-        copyfile(fileloc, filedest)  # copies file into new folder
+        shutil.copyfile(fileloc, filedest)  # copies file into new folder
         print(filedest)
 
 # Cleans up for testing purposes.
@@ -167,7 +142,7 @@ def cleaner_upper(dir, ext):
         for f in filelist:
             os.remove(f)        #removes files
 
-# Finds specific images ina folder (used for looking up specific frames)
+# Finds specific images in a folder (used for looking up specific frames)
 def image_finder(origin_dir, dest_dir, frame_number):
     for subdir, subdirList, fileList in os.walk(origin_dir):
         print(subdir)  # for every subdirectory in the origin_dir
@@ -181,62 +156,58 @@ def image_finder(origin_dir, dest_dir, frame_number):
         else:
             continue
 
+# Resize all images in a directory to a given size
 def resize_all(path, size):
 
     dirs = os.listdir(path)
     for file in dirs:
         if file.endswith('.png'):
             print(file)
-            im = Image.open(path + file)
+            im = Image.open(path + file)    # open with PIL library
             f, e = os.path.splitext(path + file)
-            imResize = im.resize((size, size), Image.ANTIALIAS)
+            imResize = im.resize((size, size), Image.ANTIALIAS)     # resize the image
             imResize.save(f + ' resized.png', 'PNG', quality=90)
-            print(imResize.size)
+            print(imResize.size)    #test print
             print(f + ' resized.png')
 
+# Moves .png files from one movie to a single folder
+def files_to_folders(path, ext):
+
+    for i in range(0, 50):      # arbitrary range that will capture all potential movie names (i.e. 8_movie, 22_movie...)
+        for file in os.listdir(path):
+            if file.endswith(".png"):
+                print(path + "/" + file)
+                split = file.split(".")
+                if (split[0] == (" " + str(i) + ext)):      # if file matches pattern
+                    if not os.path.exists(path + "/" + split[0]):   # create a new folder for the movie in none exists
+                        os.makedirs(path + "/" + split[0])
+                    shutil.move(path + "/" + file, path + "/" + split[0])    # move file to the folder
+                    print(split[0])
+                    print("s")
 
 ########################################################
 
 # Main:
 
-#rg = 5
+# Generating difference images
+
+#rg = 5         # little delta
 #for i in range(5, 30):
 #    diff_imager('/Library/ML Data/Antibiotic videos/Test Data 2020-03-24 - ThT movies/Treated Frames', '/Library/ML Data/Antibiotic videos/Test Data 2020-03-24 - ThT movies/Treated Diff', i, i+rg)
 #    diff_imager('/Library/ML Data/Antibiotic videos/Test Data 2020-03-24 - ThT movies/Untreated Frames', '/Library/ML Data/Antibiotic videos/Test Data 2020-03-24 - ThT movies/Untreated Diff', i, i+rg)
 
+# Resize all files and test
 #resize_all('/Library/ML Data/Antibiotic videos/Test Data 2020-03-24 - ThT movies/Treated Diff/', 299)
 #resize_all('/Library/ML Data/Antibiotic videos/Test Data 2020-03-24 - ThT movies/Untreated Diff/', 299)
 #im = Image.open('/Library/ML Data/Antibiotic videos/Data/Treated Diff/ 7_movie.avi - diff(11 - 16) resized.png')
 #print(im.size)
 
-## esgettit
-path = '/Library/ML Data/Antibiotic videos/Testing/Tht Treated'
-for i in range(0,50):
-    for file in os.listdir(path):
-        if file.endswith(".png"):
-            print(path + "/" + file)
-            splittor = file.split(".")
-            if (splittor[0] == (" " + str(i) + "_movie")):
-                if not os.path.exists(path + "/" + splittor[0]):
-                    os.makedirs(path + "/" + splittor[0])
-                copy(path + "/" + file, path + "/" + splittor[0])
-                print(splittor[0])
-                print("succ")
-            elif (splittor[0] == (" " + str(i) + "_movie2")):
-                if not os.path.exists(path + "/" + splittor[0]):
-                    os.makedirs(path + "/" + splittor[0])
-                copy(path + "/" + file, path + "/" + splittor[0])
-                print(splittor[0])
-                print("succ")
+#Movies all files to individual folders
+path = '/Library/ML Data/kralj-lab.tmp/Testing/Tht Treated'
 
-            elif (splittor[0] == (" " + str(i) + "_movieGBF")):
-                if not os.path.exists(path + "/" + splittor[0]):
-                    os.makedirs(path + "/" + splittor[0])
-                copy(path + "/" + file, path + "/" + splittor[0])
-                print(splittor[0])
-                print("succ")
-
-
+files_to_folders(path, "_movie")
+files_to_folders(path, "_movie2")
+files_to_folders(path, "_movieGBF")
 
 
 
