@@ -163,7 +163,7 @@ def image_finder(origin_dir, dest_dir, frame_number):
 def resize_all(path, size):
     dirs = os.listdir(path)
     for file in dirs:
-        if file.endswith('.png'):
+        if file.endswith('.png') or file.endswith('.jpg'):
             print(file)
             im = Image.open(path + file)  # open with PIL library
             f, e = os.path.splitext(path + file)
@@ -206,7 +206,7 @@ def image_chop(infile, dest, chopsize):
                        y,
                        x + chopsize,
                        y + chopsize)
-            else:  # resizes box if boundaries bad (3 cases)
+            else:  # re-indexes box if boundaries bad (3 cases)
                 if x + chopsize > width and y + chopsize > height:
                     box = (width - chopsize - 1,
                            height - chopsize - 1,
@@ -240,6 +240,38 @@ def trim(path):
     if bbox:
         cropped = im.crop(bbox)
         cropped.save(path)  # saves image
+
+
+# Randomizes the names of all files in a directory (used for shuffling data before training a model)
+# No two files will share a name, this operation cannot be undone
+def randomize_names(path):
+    # List files
+    dirs = os.listdir(path)
+
+    # Stores previously used names
+    prevs = []
+
+    for file in dirs:
+        if file.endswith('.png') or file.endswith('.jpg'):
+
+            rand = str(random.randint(100000, 999999)) # random six digit number as string
+
+            # ensures names are not repeated
+            while rand in prevs:
+                rand = str(random.randint(100000, 999999))
+
+            prevs.append(rand)  # saves for future reference
+
+            # Extract file extension
+            split1 = file.split("/")
+            split2 = split1[-1].split(".")
+            ext = split2[-1]
+            ext = "." + ext
+
+            dir = path + "/"
+
+            os.rename(dir + file, dir + rand + ext)
+            print(file + " was renamed " + dir + rand + ext)
 
 
 #################################
