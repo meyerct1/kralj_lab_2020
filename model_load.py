@@ -13,7 +13,7 @@ img_width = 299
 img_height = 299
 
 # Path to model to be loaded
-loaded = tf.keras.models.load_model('/Library/ML Data/kralj-lab.tmp/Models/Combined Data No Dropout')
+loaded = tf.keras.models.load_model('/Library/ML Data/kralj-lab.tmp/Models/April 7')
 
 print(list(loaded.signatures.keys()))
 infer = loaded.signatures["serving_default"]
@@ -32,6 +32,12 @@ loaded.compile(loss=tf.keras.losses.CategoricalCrossentropy(label_smoothing=0.1)
 def predictions(rootdir):
 
     print(rootdir)
+
+    #Statistics
+    lowest_ten = [1]*10
+    lframe_names = [None]*10
+    highest_ten = [0]*10
+    hframe_names = [None]*10
 
     d = os.listdir(rootdir)
 
@@ -72,6 +78,19 @@ def predictions(rootdir):
                 unteated_sum = unteated_sum + result[0,0]
                 treated_sum = treated_sum + result[0,1]
 
+                #Statistics
+                close_mean = abs(result[0,0] - 0.5)
+                if (all (i >= close_mean for i in lowest_ten)):
+                    m = max(lowest_ten)
+                    ind = lowest_ten.index(m)
+                    lowest_ten[ind] = close_mean
+                    lframe_names[ind] = file
+                elif (all (i <= close_mean for i in highest_ten)):
+                    l = min(highest_ten)
+                    ind = highest_ten.index(l)
+                    highest_ten[ind] = close_mean
+                    hframe_names[ind] = file
+
                 n = n + 1
 
         if n == 0:
@@ -93,7 +112,14 @@ def predictions(rootdir):
 
         i = i + 1
 
+    print(lowest_ten)
+    print(lframe_names)
+    print('######################')
+    print(highest_ten)
+    print(hframe_names)
     print("total average treated: " + str(statistics.mean(treated_list)) + " untreated: " + str(statistics.mean(untreated_list)))
 
-rootdir = '/Library/ML Data/kralj-lab.tmp/Testing/Treated Folders/'
-predictions(rootdir)
+rootdir_u = '/Library/ML Data/kralj-lab.tmp/Test/Untreated Test/'
+rootdir_t = '/Library/ML Data/kralj-lab.tmp/Test/Treated Test/'
+predictions(rootdir_u)
+predictions(rootdir_t)
