@@ -4,6 +4,7 @@
 import matplotlib.pylab as plt
 import tensorflow as tf
 import tensorflow_hub as hub
+from keras.layers import Dense
 
 data_dir = "/Library/ML Data/kralj-lab.tmp/Data"        # Directory with data, seperated into subfolders by category
 model_save_dir = "/Library/ML Data/kralj-lab.tmp/Models/"       # Directory where the model will be saved (saved_model format)
@@ -56,6 +57,7 @@ model = tf.keras.Sequential([
     tf.keras.layers.Dense(train_generator.num_classes, activation='softmax',
                           kernel_regularizer=tf.keras.regularizers.l2(0.0001))
 ])
+
 model.build((None,)+IMAGE_SIZE+(3,))
 model.summary()
 

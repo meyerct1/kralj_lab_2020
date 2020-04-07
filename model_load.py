@@ -107,8 +107,8 @@ def predictions(rootdir):
 
         total_untreated = total_untreated + untreated_avg
         total_treated = total_treated + treated_avg
-        print(d[i] + '\n' + "treated avg: " + str(untreated_avg) +
-                             " untreated avg: " + str(treated_avg) + '\n')
+        print(d[i] + '\n' + "p1 avg: " + str(untreated_avg) +
+                             " p2 avg: " + str(treated_avg) + '\n')
 
         i = i + 1
 
@@ -117,7 +117,7 @@ def predictions(rootdir):
     print('######################')
     print(highest_ten)
     print(hframe_names)
-    print("total average treated: " + str(statistics.mean(treated_list)) + " untreated: " + str(statistics.mean(untreated_list)))
+    print("total average p1: " + str(statistics.mean(treated_list)) + " p2: " + str(statistics.mean(untreated_list)))
 
 rootdir_u = '/Library/ML Data/kralj-lab.tmp/Test/Untreated Test/'
 rootdir_t = '/Library/ML Data/kralj-lab.tmp/Test/Treated Test/'
