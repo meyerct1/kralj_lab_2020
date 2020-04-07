@@ -24,8 +24,7 @@ print(cv2.__version__)
 # Getting images code, takes all videos in video_dir, extracts frames and saves frames in a folder with the same name
 # as the video in save_dir.
 def frame_extraction(video_dir, save_dir):
-    # Treated directory
-    directory = os.fsencode(video_dir)
+    directory = os.fsencode(video_dir)    # video directory
     for file in os.listdir(directory):
         filename = os.fsdecode(file)
         fileloc = video_dir + "/" + filename  # file location as string
@@ -67,8 +66,11 @@ def diff_imager(read_dir, save_dir, first_frame, last_frame):
 
             # try converting these to doubles -- to increase resolution.
             # diff has the required difference data
-            diff = np.abs(img1.astype(np.uint) - img2.astype(np.uint)).astype(np.uint8)
-            # print(type(diff))
+            try:
+                diff = np.abs(img1.astype(np.uint) - img2.astype(np.uint)).astype(np.uint8)
+            except ValueError:      # in case for some reason the images were trimmed improperly, skips the iteration
+                print("ValueError encountered")
+                continue
 
             # Convert from array and save as image
             img = Image.fromarray(diff)
@@ -190,13 +192,15 @@ def files_to_folders(path, ext):
 
 # Crops an image into multiple pieces of size (chopsize, chopsize)
 def image_chop(infile, dest, chopsize):
+
     img = Image.open(infile)
     width, height = img.size
+    print(str(img.size))
 
     # get the name of the file
     split1 = infile.split("/")
     split2 = split1[-1].split(".")
-    fname = split2[0]
+    fname = split2[0] + "." + split2[1]
 
     # Save Chops of original image
     for x in range(0, width, chopsize):
@@ -227,7 +231,8 @@ def image_chop(infile, dest, chopsize):
 
             print('%s %s' % (infile, box))
             im = img.crop(box)
-            im.save('%s.x%03d.y%03d.jpg' % (dest + "/" + fname, x, y))      # save as jpeg
+            print('%s.x%03d.y%03d.png' % (dest + "/" + fname, x, y))
+            im.save('%s.x%03d.y%03d.png' % (dest + "/" + fname, x, y))      # save as png
 
 
 #  Removes borders of an image (note: overwrites original file)
@@ -265,8 +270,7 @@ def randomize_names(path):
             # Extract file extension
             split1 = file.split("/")
             split2 = split1[-1].split(".")
-            ext = split2[-1]
-            ext = "." + ext
+            ext = "." + split2[-1]
 
             dir = path + "/"
 
@@ -276,14 +280,17 @@ def randomize_names(path):
 
 #################################
 
-# Main:
-
 # Generating difference images
 
-# rg = 5         # little delta
-# for i in range(5, 30):
-#    diff_imager('/Library/ML Data/Antibiotic videos/Test Data 2020-03-24 - ThT movies/Treated Frames', '/Library/ML Data/Antibiotic videos/Test Data 2020-03-24 - ThT movies/Treated Diff', i, i+rg)
-#    diff_imager('/Library/ML Data/Antibiotic videos/Test Data 2020-03-24 - ThT movies/Untreated Frames', '/Library/ML Data/Antibiotic videos/Test Data 2020-03-24 - ThT movies/Untreated Diff', i, i+rg)
+#rg = 5         # little delta
+#for i in range(5, 30):
+#    diff_imager('/Library/ML Data/kralj-lab.tmp/Test Data 2020-03-24 - ThT movies/Treated Frames',
+#                '/Library/ML Data/kralj-lab.tmp/Test Data 2020-03-24 - ThT movies/Treated Diff', i, i + rg)
+#    diff_imager('/Library/ML Data/kralj-lab.tmp/Test Data 2020-03-24 - ThT movies/Untreated Frames',
+#                '/Library/ML Data/kralj-lab.tmp/Test Data 2020-03-24 - ThT movies/Untreated Diff', i, i + rg)
+    #diff_imager("/Library/ML Data/kralj-lab.tmp/Untreated Frames","/Library/ML Data/kralj-lab.tmp/Untreated Diff", i, i + rg)
+    #diff_imager("/Library/ML Data/kralj-lab.tmp/Treated Frames", "/Library/ML Data/kralj-lab.tmp/Treated Diff", i, i + rg)
+
 
 # Resize all files and test
 # resize_all('/Library/ML Data/Antibiotic videos/Test Data 2020-03-24 - ThT movies/Treated Diff/', 299)
@@ -297,3 +304,18 @@ def randomize_names(path):
 # files_to_folders(path, "_movie")
 # files_to_folders(path, "_movie2")
 # files_to_folders(path, "_movieGBF")
+
+# Image chopping
+
+#for fl in os.listdir("/Library/ML Data/kralj-lab.tmp/Untreated Diff"):
+#    if fl.endswith(".png"):
+#        image_chop("/Library/ML Data/kralj-lab.tmp/Untreated Diff" + "/" + fl,"/Library/ML Data/kralj-lab.tmp/Untreated Data", 299)
+
+#for fl in os.listdir("/Library/ML Data/kralj-lab.tmp/Treated Diff"):
+#    if fl.endswith(".png"):
+#        image_chop("/Library/ML Data/kralj-lab.tmp/Treated Diff" + "/" + fl,"/Library/ML Data/kralj-lab.tmp/Treated Data", 299)
+
+
+# Rename randomly
+#randomize_names("/Library/ML Data/kralj-lab.tmp/Untreated Data")
+#randomize_names("/Library/ML Data/kralj-lab.tmp/Treated Data")

@@ -7,7 +7,7 @@ import tensorflow_hub as hub
 
 data_dir = "/Library/ML Data/kralj-lab.tmp/Data"        # Directory with data, seperated into subfolders by category
 model_save_dir = "/Library/ML Data/kralj-lab.tmp/Models/"       # Directory where the model will be saved (saved_model format)
-BATCH_SIZE = 64 #@param {type:"integer"}
+BATCH_SIZE = 128 #@param {type:"integer"}
 do_data_augmentation = False #@param {type:"boolean"}   # True enables random resize/rotation of images, not very useful for our purposes
 do_fine_tuning = False #@param {type:"boolean"}         # True enables fine tuning; transfer learning
 dropout_rate = 0.2      # probability a neuron is deactivated for an training step
