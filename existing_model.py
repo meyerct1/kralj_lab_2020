@@ -6,10 +6,8 @@ import tensorflow as tf
 import tensorflow_hub as hub
 from tensorboard.plugins.hparams import api as hp
 
-config = tf.ConfigProto()
-config.gpu_options.allow_growth = True
-session = tf.Session(config=config)
-
+#Try this
+tf.keras.backend.clear_session()
 
 print(tf.__version__)
 acc_list = []
