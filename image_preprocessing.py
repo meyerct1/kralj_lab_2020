@@ -316,10 +316,10 @@ def randomize_names(path):
 #        image_chop("/Library/ML Data/kralj-lab.tmp/Treated Diff" + "/" + fl,"/Library/ML Data/kralj-lab.tmp/Treated Test", 299)
 
 
-files_to_folders("/Library/ML Data/kralj-lab.tmp/Treated Test", "_movie")
-files_to_folders("/Library/ML Data/kralj-lab.tmp/Treated Test", "_movie2")
-files_to_folders("/Library/ML Data/kralj-lab.tmp/Untreated Test", "_movie")
-files_to_folders("/Library/ML Data/kralj-lab.tmp/Untreated Test", "_movie2")
+#files_to_folders("/Library/ML Data/kralj-lab.tmp/Treated Test", "_movie")
+#files_to_folders("/Library/ML Data/kralj-lab.tmp/Treated Test", "_movie2")
+#files_to_folders("/Library/ML Data/kralj-lab.tmp/Untreated Test", "_movie")
+#files_to_folders("/Library/ML Data/kralj-lab.tmp/Untreated Test", "_movie2")
 # Rename randomly
 #randomize_names("/Library/ML Data/kralj-lab.tmp/Untreated Data")
 #randomize_names("/Library/ML Data/kralj-lab.tmp/Treated Data")
