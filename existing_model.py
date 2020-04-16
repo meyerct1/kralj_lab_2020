@@ -1,4 +1,3 @@
-#Eugene Miller
 #Using an existing model from Google to retrain for bacterial-identification purposes.
 
 import matplotlib.pylab as plt

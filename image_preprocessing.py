@@ -1,4 +1,3 @@
-# Eugene Miller
 # Preprocessing/Data Manipulation functions for Kralj-Lab project (ML training on bacterial antibiotic resistance).
 ########################################################
 
@@ -61,8 +60,8 @@ def diff_imager(read_dir, save_dir, first_frame, last_frame):
             dirname = os.fsdecode(subdir)
 
             # read in the desired first and last frames
-            img1 = cv2.imread(subdir + '/frame%d.jpg' % first_frame)
-            img2 = cv2.imread(subdir + '/frame%d.jpg' % last_frame)
+            img1 = cv2.imread(subdir + '\\frame%d.jpg' % first_frame)
+            img2 = cv2.imread(subdir + '\\frame%d.jpg' % last_frame)
 
             # try converting these to doubles -- to increase resolution.
             # diff has the required difference data
@@ -76,9 +75,9 @@ def diff_imager(read_dir, save_dir, first_frame, last_frame):
             img = Image.fromarray(diff)
 
             # Figure out which video the frames came from and add the save file name.
-            names = dirname.split("/")
+            names = dirname.split("\\")
             savename = names[-1]
-            img.save("%s %s - diff(%d - %d).png" % ((save_dir + "/"), savename, first_frame, last_frame))
+            img.save("%s %s - diff(%d - %d).png" % ((save_dir + '\\'), savename, first_frame, last_frame))
         else:
             continue
 
@@ -198,7 +197,7 @@ def image_chop(infile, dest, chopsize):
     print(str(img.size))
 
     # get the name of the file
-    split1 = infile.split("/")
+    split1 = infile.split("\\")
     split2 = split1[-1].split(".")
     fname = split2[0] + "." + split2[1]
 
@@ -231,8 +230,8 @@ def image_chop(infile, dest, chopsize):
 
             print('%s %s' % (infile, box))
             im = img.crop(box)
-            print('%s.x%03d.y%03d.png' % (dest + "/" + fname, x, y))
-            im.save('%s.x%03d.y%03d.png' % (dest + "/" + fname, x, y))      # save as png
+            print('%s.x%03d.y%03d.png' % (dest + "\\" + fname, x, y))
+            im.save('%s.x%03d.y%03d.png' % (dest + "\\" + fname, x, y))      # save as png
 
 
 #  Removes borders of an image (note: overwrites original file)

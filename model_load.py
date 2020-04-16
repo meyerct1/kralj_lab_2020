@@ -1,4 +1,3 @@
-#Eugene Miller
 #Reads in a saved model trained on treated/untreated data for the antibiotic resistance classification project.
 
 import tensorflow as tf
