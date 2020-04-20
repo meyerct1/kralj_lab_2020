@@ -1,12 +1,7 @@
 #Code to do non-ml classification
 import cv2
 from scipy.stats import entropy
-import numpy as np
-from PIL import Image, ImageChops
-import shutil
 import math
-import glob
-import random
 import os, sys
 
 from image_preprocessing import diff_imager, image_chop, test_train_split
@@ -35,6 +30,10 @@ def img_kl_divergence(set1, set2):
                     im2 = cv2.imread(set2 + '\\' + f, cv2.IMREAD_GRAYSCALE)
                     im2 = im2/255
                     if entropy(sum(list(im1)) / float(len(list(im1))), sum(list(im2)) / float(len(list(im2)))) == float("inf"):
+                        #If one value is zero and the other isn't
+                        arr.append(5)
+                    elif math.isnan(entropy(sum(list(im1)) / float(len(list(im1))), sum(list(im2)) / float(len(list(im2))))):
+                        #If both values are zero.   
                         arr.append(0)
                     else:
                         #print(entropy(sum(list(im1)) / float(len(list(im1))), sum(list(im2)) / float(len(list(im2)))))  #Reduce images to singular value, calc entropy.

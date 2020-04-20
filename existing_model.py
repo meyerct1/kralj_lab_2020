@@ -3,14 +3,13 @@
 import matplotlib.pylab as plt
 import tensorflow as tf
 import tensorflow_hub as hub
+import operator
+import time
 from tensorboard.plugins.hparams import api as hp
 
-#Try this
-tf.keras.backend.clear_session()
 
 print(tf.__version__)
 acc_list = []
-print(type(acc_list))
 data_dir = "/Library/ML Data/kralj-lab.tmp/Data"        # Directory with data, seperated into subfolders by category
 win_data_dir = r"C:\Users\eugmille\Desktop\kralj-lab.tmp\Data"
 model_save_dir = "/Library/ML Data/kralj-lab.tmp/Models/"       # Directory where the model will be saved (saved_model format)
@@ -36,7 +35,9 @@ print(IMAGE_SIZE)
 print("Using {} with input size {}".format(MODULE_HANDLE, IMAGE_SIZE))
 
 # defining test/training datasets
-def test_train_model(batch_size, dropout_rate, learn_rate, momentum, loss_label_smoothing):
+def test_train_model(batch_size, dropout_rate, learn_rate, momentum, loss_label_smoothing, epochs):
+
+    tf.keras.backend.clear_session() # clear memory
     datagen_kwargs = dict(rescale=1./255, validation_split=.20)
     dataflow_kwargs = dict(target_size=IMAGE_SIZE, batch_size=batch_size,
                        interpolation="bilinear")
@@ -83,13 +84,12 @@ def test_train_model(batch_size, dropout_rate, learn_rate, momentum, loss_label_
     # Run
     hist = model.fit(
         train_generator,
-        epochs=1, steps_per_epoch=steps_per_epoch,
+        epochs=epochs, steps_per_epoch=steps_per_epoch,
         validation_data=valid_generator,
         validation_steps=validation_steps).history
 
 
-    print(hist['accuracy'][0])
-    print(type(hist['accuracy']))
+    print(hist['accuracy'][1])
     acc_list.extend(hist['accuracy'])
     # Results
     plt.figure()
@@ -111,7 +111,19 @@ def test_train_model(batch_size, dropout_rate, learn_rate, momentum, loss_label_
     #saved_model_path = win_model_save_dir
     #tf.saved_model.save(model, saved_model_path)
 
-test_train_model(36, dropout_rate, learn_rate, momentum, loss_label_smoothing)
-print(acc_list)
-print(acc_list.max())
+param_list = []
+p = 729
+for i in [64, 128, 256]: # batch size
+    for j in [0.1, 0.2, 0.3]: # dropout rate
+        for k in [0.001, 0.005, 0.01]:  # learn rate
+            for l in [0.8, 0.9, 1]: # momentum
+                for m in [0, 0.1, 0.2]: # loss_label_smoothing
+                    test_train_model(i, j, k, l, m, 2)
+                    param_list.extend("Batch size: " + str(i) + " Dropout_rate: " + str(j) + " Learn Rate: " + str(k) + " Momentum: " + str(l)
+                                      + " Loss_label_smoothing: " + str(m))
+index, value = max(enumerate(acc_list), key=operator.itemgetter(1))
+print("Max Acc: " + +str(value))
+print("Params:  ")
+print(param_list[index])
+
 
