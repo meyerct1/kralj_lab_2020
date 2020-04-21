@@ -41,12 +41,22 @@ def img_kl_divergence(set1, set2):
     print("Mean " + name_set1 + " to " + name_set2 + ": " + str(sum(arr) / float(len(arr))))   # Calculate mean of list
     print("Max: "+ str(max(arr)))
 
-img_kl_divergence(untreated_format_dir, treated_format_dir)
-img_kl_divergence(treated_format_dir, untreated_format_dir)
 img_kl_divergence(untreated_format_dir, untreated_format_dir)
+img_kl_divergence(untreated_format_dir, treated_format_dir)
+print("###################")
 img_kl_divergence(treated_format_dir, treated_format_dir)
+img_kl_divergence(treated_format_dir, untreated_format_dir)
 
 
+untreated_dir = 'C:\\Users\\eugmille\\Desktop\\kralj-lab.tmp\\Resize No Chop\\Untreated\\'
+treated_dir = 'C:\\Users\\eugmille\\Desktop\\kralj-lab.tmp\\Resize No Chop\\Treated\\'
+
+print("###################")
+img_kl_divergence(untreated_dir,untreated_dir)
+img_kl_divergence(untreated_dir, treated_dir)
+print("###################")
+img_kl_divergence(treated_dir,treated_dir)
+img_kl_divergence(treated_dir,untreated_dir)
 #When is this function equal to inf?
 
 

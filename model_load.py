@@ -12,7 +12,7 @@ img_width = 299
 img_height = 299
 
 # Path to model to be loaded
-loaded = tf.keras.models.load_model('/Library/ML Data/kralj-lab.tmp/Models/April 7')
+loaded = tf.keras.models.load_model('C:\\Users\\eugmille\\Desktop\\kralj-lab.tmp\\Models\\April 21')
 
 print(list(loaded.signatures.keys()))
 infer = loaded.signatures["serving_default"]
@@ -118,7 +118,8 @@ def predictions(rootdir):
     print(hframe_names)
     print("total average p1: " + str(statistics.mean(treated_list)) + " p2: " + str(statistics.mean(untreated_list)))
 
-rootdir_u = '/Library/ML Data/kralj-lab.tmp/Test/Untreated Test/'
-rootdir_t = '/Library/ML Data/kralj-lab.tmp/Test/Treated Test/'
-predictions(rootdir_u)
-predictions(rootdir_t)
+untreated_dir = 'C:\\Users\\eugmille\\Desktop\\kralj-lab.tmp\\Resize No Chop\\Untreated\\'
+treated_dir = 'C:\\Users\\eugmille\\Desktop\\kralj-lab.tmp\\Resize No Chop\\Treated\\'
+
+predictions(untreated_dir)
+predictions(treated_dir)

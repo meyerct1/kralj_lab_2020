@@ -11,9 +11,9 @@ from tensorboard.plugins.hparams import api as hp
 print(tf.__version__)
 acc_list = []
 data_dir = "/Library/ML Data/kralj-lab.tmp/Data"        # Directory with data, seperated into subfolders by category
-win_data_dir = r"C:\Users\eugmille\Desktop\kralj-lab.tmp\Data"
+win_data_dir = r"C:\Users\eugmille\Desktop\kralj-lab.tmp\Resize No Chop"
 model_save_dir = "/Library/ML Data/kralj-lab.tmp/Models/"       # Directory where the model will be saved (saved_model format)
-win_model_save_dir = r"C:\Users\eugmille\Desktop\kralj-lab.tmp\Models"
+win_model_save_dir = r"C:\Users\eugmille\Desktop\kralj-lab.tmp\Models\April 21"
 BATCH_SIZE = 128 #@param {type:"integer"}
 do_data_augmentation = False #@param {type:"boolean"}   # True enables random resize/rotation of images, not very useful for our purposes
 do_fine_tuning = False #@param {type:"boolean"}         # True enables fine tuning; transfer learning
@@ -108,22 +108,21 @@ def test_train_model(batch_size, dropout_rate, learn_rate, momentum, loss_label_
     plt.show()
 
     # Save
-    #saved_model_path = win_model_save_dir
-    #tf.saved_model.save(model, saved_model_path)
+    saved_model_path = win_model_save_dir
+    tf.saved_model.save(model, saved_model_path)
 
-param_list = []
-p = 729
-for i in [64, 128, 256]: # batch size
-    for j in [0.1, 0.2, 0.3]: # dropout rate
-        for k in [0.001, 0.005, 0.01]:  # learn rate
-            for l in [0.8, 0.9, 1]: # momentum
-                for m in [0, 0.1, 0.2]: # loss_label_smoothing
-                    test_train_model(i, j, k, l, m, 2)
-                    param_list.extend("Batch size: " + str(i) + " Dropout_rate: " + str(j) + " Learn Rate: " + str(k) + " Momentum: " + str(l)
-                                      + " Loss_label_smoothing: " + str(m))
-index, value = max(enumerate(acc_list), key=operator.itemgetter(1))
-print("Max Acc: " + +str(value))
-print("Params:  ")
-print(param_list[index])
+#param_list = []
+#for i in [16,32,64]: # batch size
+#    for j in [0.1, 0.2, 0.3]: # dropout rate
+#        for k in [0.001, 0.005, 0.01]:  # learn rate
+#            for l in [0.8, 0.9, 1]: # momentum
+#                for m in [0, 0.1, 0.2]: # loss_label_smoothing
+#                    test_train_model(i, j, k, l, m, 2)
+#                    param_list.extend("Batch size: " + str(i) + " Dropout_rate: " + str(j) + " Learn Rate: " + str(k) + " Momentum: " + str(l)
+#                                      + " Loss_label_smoothing: " + str(m))
+#index, value = max(enumerate(acc_list), key=operator.itemgetter(1))
+#print("Max Acc: " + str(value))
+#print("Params:  ")
+#print(param_list[index])
 
-
+test_train_model(16, 0.1, 0.005, 0.9, 0, 15)
