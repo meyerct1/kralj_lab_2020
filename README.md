@@ -23,3 +23,6 @@ To adress this problem, a machine learning framework is being developed in order
   
 *diff_imagery.py
   Code that takes two greyscale images, calculates their difference in greyscale pixel values, and creates a corresponding images based on the difference. Also included in image_preprocessing.py.
+  
+*divergence.py
+  Find the KL Divergence between two images and reports the result.
