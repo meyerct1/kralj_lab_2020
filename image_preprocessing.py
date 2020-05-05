@@ -133,7 +133,7 @@ def test_train_split(origin_dir, train_dir, val_dir):
         print(filedest)
 
 
-# Cleans up for testing purposes.
+# Cleans up for testing purposes. (deletes files and folders of a given extention)
 def cleaner_upper(dir, ext):
     if ext == "folder":
         filelist = [file for file in glob.glob(dir + "/*/", recursive=True)]
@@ -176,17 +176,21 @@ def resize_all(path, size):
 
 # Moves .png files from one movie to a single folder
 def files_to_folders(path, ext):
-    for i in range(0, 50):  # arbitrary range that will capture all potential movie names (i.e. 8_movie, 22_movie...)
+    num_files = len(os.listdir(path))
+    while num_files != 0:
+        i = 0    # arbitrary range that will capture all potential movie names (i.e. 8_movie, 22_movie...)
         for file in os.listdir(path):
-            if file.endswith(".png"):
+            if file.endswith(".png") | file.endswith(".jpg"):
                 print(path + "/" + file)
                 split = file.split(".")
                 if (split[0] == (" " + str(i) + ext)):  # if file matches pattern
                     if not os.path.exists(path + "/" + split[0]):  # create a new folder for the movie in none exists
                         os.makedirs(path + "/" + split[0])
                     shutil.move(path + "/" + file, path + "/" + split[0])  # move file to the folder
+                    num_files -= 1      # decrement loop variable
                     print(split[0])
                     print("s")
+        i += 1
 
 
 # Crops an image into multiple pieces of size (chopsize, chopsize)
@@ -264,7 +268,7 @@ def randomize_names(path):
             while rand in prevs:
                 rand = str(random.randint(100000, 999999))
 
-            prevs.append(rand)  # saves for future reference
+            prevs.append(rand)  # saves to avoid repitition
 
             # Extract file extension
             split1 = file.split("/")
@@ -278,6 +282,31 @@ def randomize_names(path):
 
 
 #################################
+
+# Pipeline (For one folder of videos)
+a = "path to unaltered data"
+b = "path to folder where frames are saved"
+c = "path to folder where diff images are saved"
+d = "path to ready data"
+def main():
+    frame_extraction(a,b)       # extracts frames to folder b
+
+    for f in os.listdir(b):
+      if f.endswith(".jpg"):
+            trim(os.path.join(b,f))         # trims borders off all the frames
+
+    for i in range(5,30):
+        diff_imager(b,c, i, i+5)        # generates difference images from 5 to 30 with little delta = 5
+
+    for f in os.listdir(c):
+      if f.endswith(".jpg"):
+            image_chop(os.path.join(c,f), os.path.join(d,f), 299)         # Takes subsections of images and saves them to the "ready" folder
+
+    randomize_names(d)      # randomize names for test/val purposes
+
+
+
+
 
 # Generating difference images
 

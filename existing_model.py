@@ -13,7 +13,7 @@ acc_list = []
 data_dir = "/Library/ML Data/kralj-lab.tmp/Data"        # Directory with data, seperated into subfolders by category
 win_data_dir = r"C:\Users\eugmille\Desktop\kralj-lab.tmp\Resize No Chop"
 model_save_dir = "/Library/ML Data/kralj-lab.tmp/Models/"       # Directory where the model will be saved (saved_model format)
-win_model_save_dir = r"C:\Users\eugmille\Desktop\kralj-lab.tmp\Models\April 21"
+win_model_save_dir = r"C:\Users\eugmille\Desktop\kralj-lab.tmp\Models"
 BATCH_SIZE = 128 #@param {type:"integer"}
 do_data_augmentation = False #@param {type:"boolean"}   # True enables random resize/rotation of images, not very useful for our purposes
 do_fine_tuning = False #@param {type:"boolean"}         # True enables fine tuning; transfer learning
@@ -89,7 +89,6 @@ def test_train_model(batch_size, dropout_rate, learn_rate, momentum, loss_label_
         validation_steps=validation_steps).history
 
 
-    print(hist['accuracy'][1])
     acc_list.extend(hist['accuracy'])
     # Results
     plt.figure()

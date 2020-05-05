@@ -12,7 +12,8 @@ img_width = 299
 img_height = 299
 
 # Path to model to be loaded
-loaded = tf.keras.models.load_model('C:\\Users\\eugmille\\Desktop\\kralj-lab.tmp\\Models\\April 21')
+loaded = tf.keras.models.load_model('C:\\Users\\eugmille\\Desktop\\kralj-lab.tmp\\Models\\1st Hyperparam Optm'
+                                    '')
 
 print(list(loaded.signatures.keys()))
 infer = loaded.signatures["serving_default"]
@@ -44,7 +45,6 @@ def predictions(rootdir):
         ind = d.index('.DS_Store')
         del d[ind]
 
-    l = len(d)
     i = 0
 
     print(d)
@@ -55,19 +55,21 @@ def predictions(rootdir):
     for dir in d:
 
         n = 0
-
+        print(rootdir)
+        print(type(rootdir))
         curr = rootdir + dir        # current path for loop iteration
-
+        print(curr)
         unteated_sum = 0
         treated_sum = 0
 
         untreated_list = []         # list of predictions that will be used to compute the overall mean for each subfolder
         treated_list = []
-
+        print(os.listdir(curr))
         for file in os.listdir(curr):
 
             if file.endswith(".png"):
                 p = os.path.join(curr, file)
+                print(p)
 
                 test_image = image.load_img(p, target_size=(img_width, img_height))
                 test_image = image.img_to_array(test_image)
