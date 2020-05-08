@@ -12,7 +12,10 @@ mkdir('raw_seg')
 mkdir('raw_seg/resistant')
 mkdir('raw_seg/susceptible')
 
-%Set FogBank segmentation parameters.  BAsed on tests 05/07/2020. 
+%What channel is this?
+ch = 'tht';
+
+%Set FogBank segmentation parameters for brightfield.  BAsed on tests 05/07/2020. 
 fill_holes_bool_oper = 'AND';
 hole_max_perct_intensity = 100;
 hole_min_perct_intensity = 0;
@@ -21,11 +24,17 @@ max_hole_size = Inf;
 min_cell_size = 50;
 min_hole_size = 50;
 
+
+%Set Parameters for ThT channel segmentation using Segment_bandpass_baxter.
+%Based on tests 05/08/2020
+%See Settings file: /home/meyerct6/Data/ml_antibiotics/unet-master/data_gfp/All susceptible/ready_data
+
 %Segment in parallel.  Uses ~800MB/pool.
 p = gcp('nocreate');
 if isempty(p)
     parpool(16);
 end
+
 
 %Begin parallel segmentation
 parfor count = 1:length(fils)
@@ -41,7 +50,14 @@ parfor count = 1:length(fils)
         %Read in the image making it an 8-bit grayscale
         I = rgb2gray(imread([fils(count).folder filesep fils(count).name]));
         try 
-            S = EGT_Segmentation(I, min_cell_size, min_hole_size, max_hole_size, hole_min_perct_intensity, hole_max_perct_intensity, fill_holes_bool_oper, manual_finetune);
+            switch ch
+                case 'tht'
+                    aImData = ImageData(fils(count).folder);
+                    aT = find(ismember(aImData.filenames{:},[fils(count).folder filesep fils(count).name]));
+                    [~, S, ~] = Segment_generic(aImData, aT);
+                case 'bf'
+                    S = EGT_Segmentation(I, min_cell_size, min_hole_size, max_hole_size, hole_min_perct_intensity, hole_max_perct_intensity, fill_holes_bool_oper, manual_finetune);
+            end
         catch ME  %Errors occur when the image is blank
             disp(['Error on image ' num2str(count)])
             S = zeros(size(I))
@@ -95,7 +111,7 @@ for fr=1:length(frames)
             diff = rgb2gray(uint8(abs(double(im1)-double(im2))));
             seg1 = imread(['raw_seg/' sub_fol filesep frm '_' f1(j).name '_seg.png']);
             seg2 = imread(['raw_seg/' sub_fol filesep frm '_' f2(j).name '_seg.png']);
-            seg = seg1+seg2;
+            seg = double(seg1)+double(seg2);
             seg = seg>0;
             %seg = seg.*127;
             if strcmp(sub_fol,'resistant')

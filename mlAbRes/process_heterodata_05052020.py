@@ -13,7 +13,7 @@ import glob
 from shutil import rmtree
 import multiprocessing
 
-MAX_NUMBER_OF_FRAMES = 30
+MAX_NUMBER_OF_FRAMES = 240
 #Processing function
 def image_preprocessing(a,b,c):
     for directory in [b,c]:
@@ -41,7 +41,7 @@ def image_preprocessing(a,b,c):
 
 #From the base directory find all the folders with avi images in them.
 #Script to analyze the
-base_dir = '/home/meyerct6/Data/ml_antibiotics/unet-master/data/'
+base_dir = '/media/hd1/unet_model_search_05082020/unet-master/data_gfp/'
 a_fils = glob.glob(base_dir + 'All*')
 # a_fils = glob.glob(base_dir + 'BF/Susceptible vs resistant/Resistant/Round 1')
 b_fils = [i + os.sep + 'extracted_frames' + os.sep for i in a_fils]
