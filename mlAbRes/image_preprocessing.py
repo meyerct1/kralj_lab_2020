@@ -27,7 +27,7 @@ from skimage.color import rgb2gray
 
 # Getting images code, takes all videos in video_dir, extracts frames and saves frames in a folder with the same name
 # as the video in save_dir.
-def frame_extraction(video_dir, save_dir, trim=True):
+def frame_extraction(video_dir, save_dir, trim=True, max_frame=np.inf):
     directory = os.fsencode(video_dir)    # video directory
     for file in os.listdir(directory):
         filename = os.fsdecode(file)
@@ -51,7 +51,7 @@ def frame_extraction(video_dir, save_dir, trim=True):
                 if trim and count == 0:
                     bg = Image.new(image.mode, image.size, image.getpixel((0, 0)))  # looks at top left pixel to determine the border color
                     diff = ImageChops.difference(image, bg)
-                    diff = ImageChops.add(diff, diff, 2.0, -100)
+                    diff = ImageChops.add(diff, diff, 2.0, -1)
                     bbox = diff.getbbox()  # creates a mask
                     if bbox:
                         image = image.crop(bbox)
@@ -62,6 +62,9 @@ def frame_extraction(video_dir, save_dir, trim=True):
 
                 #Read in next image
                 success, image = vidcap.read()
+                #Stop at the maximum frame.
+                if count>max_frame:
+                    success = False
                 if success:
                     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
                     image = Image.fromarray(image,'RGB')
@@ -306,9 +309,9 @@ def image_chop(infile, dest, chopsize):
                                x + chopsize,
                                height - 1)
 
-            print('%s %s' % (infile, box))
+            # print('%s %s' % (infile, box))
             im = img.crop(box)
-            print('%s.x%03d.y%03d.png' % (dest + fname, x, y))
+            # print('%s.x%03d.y%03d.png' % (dest + fname, x, y))
             im.save('%s.x%03d.y%03d.png' % (dest + fname, x, y))      # save as png
 
 
