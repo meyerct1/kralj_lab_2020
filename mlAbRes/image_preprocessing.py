@@ -83,7 +83,7 @@ def frame_extraction(video_dir, save_dir, trim=True, max_frame=np.inf):
 def diff_imager(read_dir, save_dir, first_frame, last_frame,to_chop=True,chopsize=299):
     for subdir, subdirList, fileList in os.walk(read_dir):
         if subdir.endswith(".avi"):  # if the folder ends with .avi, means it was created by frame_extraction
-            print(subdir)  # for every subdirectory in the read_dir
+            #print(subdir)  # for every subdirectory in the read_dir
 
             dirname = os.fsdecode(subdir)
 
@@ -103,7 +103,7 @@ def diff_imager(read_dir, save_dir, first_frame, last_frame,to_chop=True,chopsiz
                 continue
 
             # Convert from array and save as image
-            img = Image.fromarray(diff,'RGB')
+            img = Image.fromarray(diff,'RGB').convert('L')
             # Figure out which video the frames came from and add the save file name.
             names = dirname.split(os.sep)
             savename = names[-1]
@@ -121,7 +121,7 @@ def diff_imager(read_dir, save_dir, first_frame, last_frame,to_chop=True,chopsiz
 def image_chop_direct(img, fname, dest, chopsize):
 
     width, height = img.size
-    print(str(img.size))
+    #print(str(img.size))
 
     # Save Chops of original image
     for x in range(0, width, chopsize):
@@ -151,7 +151,7 @@ def image_chop_direct(img, fname, dest, chopsize):
                                height - 1)
 
             im = img.crop(box)
-            print('%s.x%03d.y%03d.png' % (dest + fname, x, y))
+            #print('%s.x%03d.y%03d.png' % (dest + fname, x, y))
             im.save('%s.x%03d.y%03d.png' % (dest + fname, x, y))      # save as png
 
 
@@ -275,7 +275,7 @@ def image_chop(infile, dest, chopsize):
 
     img = Image.open(infile)
     width, height = img.size
-    print(str(img.size))
+    #print(str(img.size))
 
     # get the name of the file
     split1 = infile.split(os.sep)
