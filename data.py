@@ -58,7 +58,7 @@ def trainGenerator(batch_size,train_path,image_folder,mask_folder,aug_dict,image
     if you want to visualize the results of generator, set save_to_dir = "your path"
     '''
     image_datagen = ImageDataGenerator(**aug_dict)
-    mask_datagen = ImageDataGenerator(**aug_dict)
+    mask_datagen = ImageDataGenerator()
     image_generator = image_datagen.flow_from_directory(
         train_path,
         classes = [image_folder],
