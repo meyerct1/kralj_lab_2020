@@ -1,0 +1,45 @@
+Location,Source
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All susceptible/Round 0,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Susceptible vs resistant/Susceptible/Round 1/*Galone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All susceptible/Round 1,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Susceptible vs resistant/Susceptible/Round 2/*Galone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All resistant/Round 1,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Susceptible vs resistant/Resistant/Round 2/*Galone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All resistant/Round 0,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Susceptible vs resistant/Resistant/Round 1/*Galone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All susceptible/Round 0,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Susceptible vs resistant/Susceptible/Round 1/*BFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All susceptible/Round 1,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Susceptible vs resistant/Susceptible/Round 2/*BFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All resistant/Round 1,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Susceptible vs resistant/Resistant/Round 2/*BFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All resistant/Round 0,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Susceptible vs resistant/Resistant/Round 1/*BFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All resistant/Round 2,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Hetero resistance/All resistant/Round 1/*Galone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All resistant/Round 3,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Hetero resistance/All resistant/Round 2/*Galone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All resistant/Round 4,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Hetero resistance/All resistant/Round 3/*Galone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All resistant/Round 5,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Hetero resistance/All resistant/Round 4/*Galone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All resistant/Round 2,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Hetero resistance/All resistant/Round 1/*BFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All resistant/Round 3,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Hetero resistance/All resistant/Round 2/*BFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All resistant/Round 4,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Hetero resistance/All resistant/Round 3/*BFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All resistant/Round 5,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Hetero resistance/All resistant/Round 4/*BFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All susceptible/Round 2,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Hetero resistance/All susceptible/Round 1/*Galone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All susceptible/Round 3,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Hetero resistance/All susceptible/Round 2/*Galone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All susceptible/Round 4,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Hetero resistance/All susceptible/Round 3/*Galone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All susceptible/Round 5,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Hetero resistance/All susceptible/Round 4/*Galone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All susceptible/Round 2,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Hetero resistance/All susceptible/Round 1/*BFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All susceptible/Round 3,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Hetero resistance/All susceptible/Round 2/*BFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All susceptible/Round 4,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Hetero resistance/All susceptible/Round 3/*BFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All susceptible/Round 5,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Hetero resistance/All susceptible/Round 4/*BFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All resistant/Round 6,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 1/Resistant/*Kan(100)_mntH_movieGalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All resistant/Round 7,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 2/Resistant/*Kan(100)_mntH_movieGalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All resistant/Round 8,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 3/Resistant/*Kan(100)_mntH_movieGalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All resistant/Round 9,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 4/Resistant/*Kan(100)_mntH_movieGalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All resistant/Round 10,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 5/Resistant/*Kan(100)_mntH_movieGalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All resistant/Round 6,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 1/Resistant/*Kan(100)_mntH_movieBFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All resistant/Round 7,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 2/Resistant/*Kan(100)_mntH_movieBFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All resistant/Round 8,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 3/Resistant/*Kan(100)_mntH_movieBFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All resistant/Round 9,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 4/Resistant/*Kan(100)_mntH_movieBFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All resistant/Round 10,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 5/Resistant/*Kan(100)_mntH_movieBFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All susceptible/Round 6,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 1/Susceptible/*Kan(100)_BW25113_movieGalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All susceptible/Round 7,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 2/Susceptible/*Kan(100)_BW25113_movieGalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All susceptible/Round 8,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 3/Susceptible/*Kan(100)_BW25113_movieGalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All susceptible/Round 9,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 4/Susceptible/*Kan(100)_BW25113_movieGalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_gfp/All susceptible/Round 10,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 5/Susceptible/*Kan(100)_BW25113_movieGalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All susceptible/Round 6,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 1/Susceptible/*Kan(100)_BW25113_movieBFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All susceptible/Round 7,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 2/Susceptible/*Kan(100)_BW25113_movieBFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All susceptible/Round 8,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 3/Susceptible/*Kan(100)_BW25113_movieBFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All susceptible/Round 9,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 4/Susceptible/*Kan(100)_BW25113_movieBFalone.avi
+/media/hd1/unet_model_training_data/unet-master/data_bf/All susceptible/Round 10,/mnt/kralj_beet/Data and analysis/Users/EM/Antibiotic videos/Kan titration/Round 5/Susceptible/*Kan(100)_BW25113_movieBFalone.avi
