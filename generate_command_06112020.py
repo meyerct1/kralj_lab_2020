@@ -32,7 +32,7 @@ cnt = 0
 for i1 in range(11):
     for i2 in range(11):
         with open('commands.sh','a') as f:
-            f.write('python test_round_predictions_other_rounds.py ' + str(cnt) + '\n')
+            f.write('python test_round_predictions_other_rounds_06302020.py ' + str(cnt) + '\n')
             f.write("echo 'Finished " + str(cnt) + "'\n")
             cnt = cnt + 1
 

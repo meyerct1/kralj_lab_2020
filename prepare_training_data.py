@@ -37,7 +37,7 @@ def image_preprocessing(a,b,c):
 
 #From the base directory find all the folders with avi images in them.
 #Script to analyze the
-base_dir = '/media/hd1/unet_model_training_data/unet-master/data_*/All*/Round*'
+base_dir = '/media/hd1/unet_model_training_data_cm/unet-master/data_*/All*/Round*'
 a_fils = glob.glob(base_dir)
 b_fils = [i + os.sep + 'extracted_frames' + os.sep for i in a_fils]
 c_fils = [i + os.sep + 'ready_data' + os.sep for i in a_fils]

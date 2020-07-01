@@ -12,15 +12,15 @@ import pandas as pd
 from shutil import copyfile
 import os
 
-fil = '/media/hd1/unet_model_training_data/unet-master/data_gfp/unet_data/imKey_little-delta_1_total-time_15.txt'
+fil = '/media/hd1/unet_model_training_data_cm/unet-master/data_gfp/unet_data/imKey_little-delta_1_total-time_15.txt'
 df = pd.read_csv(fil,sep='\t')
-base_dir = '/media/hd1/unet_model_training_data/unet-master/data_gfp/unet_data/%s_little-delta_1_total-time_15/'
+base_dir = '/media/hd1/unet_model_training_data_cm/unet-master/data_gfp/unet_data/%s_little-delta_1_total-time_15/'
 
-dest_base_dir = '/media/hd1/unet_model_training_data/unet-master/data_gfp/unet_data/round_%i_%s_little-delta_1_total-time_15/'
+dest_base_dir = '/media/hd1/unet_model_training_data_cm/unet-master/data_gfp/unet_data/round_%i_%s_little-delta_1_total-time_15/'
 
 
 for i in df.index:
-    print(i)
+    print(str(i) + ' of ' + str(len(df)))
     r = int(df.loc[i,'Im1'].split('/')[-4].split(' ')[1])
     dest_base = dest_base_dir%(r,df.loc[i,'Test/Train'])
     dest_im = dest_base + 'image/' + str(df.loc[i,'Number']) + '.png'
